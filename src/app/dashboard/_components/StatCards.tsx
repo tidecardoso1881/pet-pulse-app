@@ -15,10 +15,42 @@ interface StatCardsProps {
 }
 
 const CARDS = [
-  { label: "PRÓXIMA CONSULTA",    value: "—",    sub: "Não agendada",        subClass: "",                             valueColor: "#111827", Icon: CalendarDays },
-  { label: "VACINAS PENDENTES",   value: "0",    sub: "✓ Atualizadas",       subClass: "text-[#2d7a57] font-semibold", valueColor: "#1a4d35", Icon: Syringe },
-  { label: "MEDICAMENTOS ATIVOS", value: "2",    sub: "Monitoramento ativo",  subClass: "",                             valueColor: "#111827", Icon: Pill },
-  { label: "PESO DO PET",         value: "— kg", sub: "Não registrado",       subClass: "",                             valueColor: "#111827", Icon: Scale },
+  {
+    label: "PRÓXIMA CONSULTA",
+    value: "—",
+    sub: "Nenhuma agendada",
+    subColor: "#6b7280",
+    valueColor: "#111827",
+    Icon: CalendarDays,
+    highlight: true,
+  },
+  {
+    label: "VACINAS PENDENTES",
+    value: "0",
+    sub: "Todas em dia",
+    subColor: "#2d7a57",
+    valueColor: "#111827",
+    Icon: Syringe,
+    highlight: false,
+  },
+  {
+    label: "MEDICAÇÕES ATIVAS",
+    value: "2",
+    sub: "Nenhuma ativa",
+    subColor: "#6b7280",
+    valueColor: "#111827",
+    Icon: Pill,
+    highlight: false,
+  },
+  {
+    label: "ÚLTIMO PESO",
+    value: "— kg",
+    sub: "",
+    subColor: "#6b7280",
+    valueColor: "#111827",
+    Icon: Scale,
+    highlight: false,
+  },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,24 +60,57 @@ export function StatCards({ pet }: StatCardsProps) {
       {CARDS.map((card) => (
         <div
           key={card.label}
-          className="relative bg-white rounded-xl p-[14px_16px] flex flex-col gap-1"
-          style={{ border: "1px solid #e5e7eb" }}
+          className="relative flex flex-col rounded-[14px]"
+          style={{
+            background: card.highlight ? "#e8f5ef" : "#ffffff",
+            border: `1px solid ${card.highlight ? "#b8dfc8" : "#e5e7eb"}`,
+            padding: "16px 18px",
+          }}
         >
-          <span className="text-[0.7rem] font-semibold text-gray-500 uppercase tracking-[0.04em]">
+          {/* Icon container */}
+          <div
+            className="absolute flex items-center justify-center rounded-[10px]"
+            style={{
+              top: 14,
+              right: 14,
+              width: 32,
+              height: 32,
+              background: card.highlight ? "#2d7a57" : "#f3f4f6",
+            }}
+          >
+            <card.Icon
+              size={15}
+              style={{ color: card.highlight ? "#ffffff" : "#9ca3af" }}
+            />
+          </div>
+
+          <span
+            style={{
+              fontSize: "10.5px",
+              fontWeight: 600,
+              color: "#6b7280",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+            }}
+          >
             {card.label}
           </span>
           <span
-            className="text-[1.375rem] font-extrabold leading-tight tracking-tight"
-            style={{ color: card.valueColor }}
+            style={{
+              fontSize: 22,
+              fontWeight: 800,
+              color: card.valueColor,
+              marginTop: 8,
+              lineHeight: 1,
+            }}
           >
             {card.value}
           </span>
-          <span className={`text-[0.7rem] text-gray-500 ${card.subClass}`}>
-            {card.sub}
-          </span>
-          <div className="absolute top-3 right-3 flex items-center justify-center">
-            <card.Icon size={14} className="text-gray-300" />
-          </div>
+          {card.sub && (
+            <span style={{ fontSize: "11.5px", color: card.subColor, marginTop: 4 }}>
+              {card.sub}
+            </span>
+          )}
         </div>
       ))}
     </div>

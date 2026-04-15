@@ -4,15 +4,15 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
+  LayoutGrid,
   PawPrint,
-  ClipboardList,
-  CalendarDays,
+  FileText,
+  Calendar,
   Syringe,
-  FolderOpen,
+  Folder,
   Activity,
   MapPin,
-  UtensilsCrossed,
+  Utensils,
   ShoppingBag,
   Bell,
   Settings,
@@ -20,18 +20,6 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
-
-/**
- * Sidebar — PetPulse Design System
- *
- * Especificação (Seção 6.2, Documento de Requisitos):
- *   - Logo PetPulse + VITAL BIOMETRY no topo
- *   - Itens de navegação com ícone outline
- *   - Item ativo: fundo verde-menta (#e8f5ef), texto verde (#2d7a57)
- *   - Badge de notificação laranja em Notificações
- *   - Rodapé: plano atual + link "Ver planos e assinatura"
- *   - Botão ✕ para fechar (mobile)
- */
 
 export interface SidebarItem {
   label: string;
@@ -41,28 +29,24 @@ export interface SidebarItem {
 }
 
 const NAV_ITEMS: SidebarItem[] = [
-  { label: "Painel Principal",       href: "/dashboard",         icon: <LayoutDashboard size={15} /> },
-  { label: "Meus Pets",              href: "/pets",              icon: <PawPrint size={15} /> },
-  { label: "Prontuário Digital",     href: "/medical-records",   icon: <ClipboardList size={15} /> },
-  { label: "Agenda de Cuidados",     href: "/appointments",      icon: <CalendarDays size={15} /> },
-  { label: "Vacinas",                href: "/vaccines",          icon: <Syringe size={15} /> },
-  { label: "Repositório de Exames",  href: "/exams",             icon: <FolderOpen size={15} /> },
-  { label: "Monitoramento Ativo",    href: "/health-monitoring", icon: <Activity size={15} /> },
-  { label: "Localização GPS",        href: "/gps",               icon: <MapPin size={15} /> },
-  { label: "Rotina e Alimentação",   href: "/routine",           icon: <UtensilsCrossed size={15} /> },
-  { label: "Marketplace",            href: "/marketplace",       icon: <ShoppingBag size={15} /> },
-  { label: "Notificações",           href: "/notifications",     icon: <Bell size={15} />, badge: 4 },
-  { label: "Configurações",          href: "/settings",          icon: <Settings size={15} /> },
+  { label: "Painel Principal",      href: "/dashboard",         icon: <LayoutGrid size={17} /> },
+  { label: "Meus Pets",             href: "/pets",              icon: <PawPrint size={17} /> },
+  { label: "Prontuário Digital",    href: "/medical-records",   icon: <FileText size={17} /> },
+  { label: "Agenda de Cuidados",    href: "/appointments",      icon: <Calendar size={17} /> },
+  { label: "Vacinas",               href: "/vaccines",          icon: <Syringe size={17} /> },
+  { label: "Repositório de Exames", href: "/exams",             icon: <Folder size={17} /> },
+  { label: "Monitoramento Ativo",   href: "/health-monitoring", icon: <Activity size={17} /> },
+  { label: "Localização GPS",       href: "/gps",               icon: <MapPin size={17} /> },
+  { label: "Rotina e Alimentação",  href: "/routine",           icon: <Utensils size={17} /> },
+  { label: "Marketplace",           href: "/marketplace",       icon: <ShoppingBag size={17} /> },
+  { label: "Notificações",          href: "/notifications",     icon: <Bell size={17} />, badge: 4 },
+  { label: "Configurações",         href: "/settings",          icon: <Settings size={17} /> },
 ];
 
 interface SidebarProps {
-  /** Controle mobile: se o menu está aberto */
   isOpen?: boolean;
-  /** Callback para fechar o menu (mobile) */
   onClose?: () => void;
-  /** Número de notificações não lidas (sobrescreve o padrão) */
   notificationCount?: number;
-  /** Nome do plano atual do usuário */
   planName?: string;
 }
 
@@ -74,7 +58,6 @@ export function Sidebar({
 }: SidebarProps) {
   const pathname = usePathname();
 
-  // Substitui badge de notificações se passado via prop
   const items = notificationCount !== undefined
     ? NAV_ITEMS.map((item) =>
         item.href === "/notifications"
@@ -96,44 +79,34 @@ export function Sidebar({
 
       <aside
         className={cn(
-          // Base
           "fixed top-0 left-0 h-full z-40",
-          "w-[var(--sidebar-width)] bg-[var(--sidebar-bg)]",
-          "border-r border-[var(--border)] flex flex-col",
+          "w-[var(--sidebar-width)]",
+          "border-r border-[#e5e7eb] flex flex-col",
           "transition-transform duration-250",
-          // Mobile: esconde se fechado
           !isOpen && "-translate-x-full lg:translate-x-0"
         )}
+        style={{ background: "#FDFDFC" }}
       >
-        {/* ── Logo ──────────────────────────────────────────────────────── */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-[var(--border)]">
-          <Link href="/dashboard" className="flex items-center gap-2 group">
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 26 26"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+        {/* ── Logo ── */}
+        <div className="relative">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-[10px] px-4 py-[18px] border-b border-[#e5e7eb]"
+          >
+            <div
+              className="flex items-center justify-center flex-shrink-0"
+              style={{ width: 36, height: 36, background: "#2d7a57", borderRadius: 8 }}
               aria-hidden="true"
             >
-              <path
-                d="M13 22s-9-5.5-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-9 12-9 12z"
-                fill="#2d7a57"
-                opacity="0.15"
-              />
-              <path
-                d="M13 22s-9-5.5-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-9 12-9 12z"
-                stroke="#2d7a57"
-                strokeWidth="1.5"
-                strokeLinejoin="round"
-              />
-              <circle cx="11" cy="12" r="1" fill="#2d7a57" />
-              <circle cx="15" cy="12" r="1" fill="#2d7a57" />
-              <circle cx="13" cy="14.5" r="1.4" fill="#2d7a57" />
-            </svg>
-            <div className="flex flex-col leading-tight">
-              <span className="text-[0.875rem] font-bold" style={{ color: "#1a4d35" }}>PetPulse</span>
-              <span className="text-[0.5rem] font-semibold tracking-widest uppercase" style={{ color: "#9ca3af" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </div>
+            <div className="flex flex-col" style={{ lineHeight: 1.1 }}>
+              <span style={{ fontSize: 17, fontWeight: 800, color: "#1a4d35", letterSpacing: "-0.2px", lineHeight: 1.1 }}>
+                PetPulse
+              </span>
+              <span style={{ fontSize: 9, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.12em", marginTop: 1, lineHeight: 1 }}>
                 Vital Biometry
               </span>
             </div>
@@ -143,17 +116,17 @@ export function Sidebar({
           {onClose && (
             <button
               onClick={onClose}
-              className="lg:hidden p-1 rounded text-[var(--content-muted)] hover:bg-[var(--brand-light)]"
+              className="absolute top-4 right-3 lg:hidden p-1 rounded text-[#6b7280] hover:bg-[#f3f4f6]"
               aria-label="Fechar menu"
             >
-              <X size={15} />
+              <X size={18} />
             </button>
           )}
         </div>
 
-        {/* ── Navegação ─────────────────────────────────────────────────── */}
-        <nav className="flex-1 overflow-y-auto py-2 px-2">
-          <ul className="flex flex-col gap-0.5">
+        {/* ── Navegação ── */}
+        <nav className="flex-1 overflow-y-auto py-[10px] px-[10px]">
+          <ul className="flex flex-col" style={{ gap: 2 }}>
             {items.map((item) => {
               const isActive =
                 pathname === item.href ||
@@ -164,30 +137,42 @@ export function Sidebar({
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2 px-[10px] py-[7px] rounded-[7px]",
-                      "text-[0.8125rem] font-medium transition-colors duration-150",
-                      "relative",
+                      "group flex items-center rounded-[8px] relative",
+                      "transition-colors duration-150",
                       isActive
-                        ? "bg-[var(--sidebar-active)] text-[var(--sidebar-active-text)]"
-                        : "text-[var(--sidebar-text)] hover:bg-[var(--brand-bg)] hover:text-brand"
+                        ? "bg-[#e8f5ef] text-[#2d7a57] font-semibold"
+                        : "text-[#4b5563] font-medium hover:bg-[#f3f4f6] hover:text-[#1f2937]"
                     )}
+                    style={{ gap: 12, padding: "9px 14px", fontSize: "13.5px" }}
                     aria-current={isActive ? "page" : undefined}
                   >
                     <span
                       className={cn(
                         "shrink-0 transition-colors",
                         isActive
-                          ? "text-brand"
-                          : "text-[var(--content-muted)]"
+                          ? "text-[#2d7a57]"
+                          : "text-[#6b7280] group-hover:text-[#4b5563]"
                       )}
                     >
                       {item.icon}
                     </span>
                     <span className="flex-1 truncate">{item.label}</span>
 
-                    {/* Badge de notificação */}
                     {item.badge !== undefined && item.badge > 0 && (
-                      <span className="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full bg-[var(--notify)] text-white text-[0.65rem] font-bold">
+                      <span
+                        className="flex items-center justify-center flex-shrink-0"
+                        style={{
+                          width: 18,
+                          height: 18,
+                          minWidth: 18,
+                          borderRadius: "50%",
+                          background: "#f97316",
+                          color: "#ffffff",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          lineHeight: 1,
+                        }}
+                      >
                         {item.badge}
                       </span>
                     )}
@@ -198,21 +183,24 @@ export function Sidebar({
           </ul>
         </nav>
 
-        {/* ── Rodapé — plano atual ───────────────────────────────────────── */}
-        <div className="px-[10px] py-3 border-t border-[var(--border)]">
+        {/* ── Rodapé — plano atual ── */}
+        <div className="border-t border-[#e5e7eb]">
           <Link
-            href="/settings"
-            className="flex items-center gap-2 rounded-[7px] px-[6px] py-2 hover:bg-[var(--brand-bg)] transition-colors group"
+            href="/settings/billing"
+            className="group flex items-center gap-[10px] rounded-[10px] mx-[10px] my-3 px-3 py-[10px] bg-[#e8f5ef] border border-[#b8dfc8] hover:bg-[#EAF6F0] transition-colors"
           >
-            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[var(--brand-light)] text-brand flex-shrink-0">
-              <CreditCard size={12} />
+            <span
+              className="flex items-center justify-center flex-shrink-0 rounded-full bg-white border border-[#b8dfc8]"
+              style={{ width: 28, height: 28 }}
+            >
+              <CreditCard size={16} style={{ color: "#2d7a57" }} />
             </span>
             <div className="flex flex-col leading-tight min-w-0">
-              <span className="text-[0.7rem] font-semibold text-[var(--content-secondary)] truncate">
+              <span className="truncate" style={{ fontSize: 13, fontWeight: 700, color: "#1a4d35" }}>
                 {planName}
               </span>
-              <span className="text-[0.65rem] text-brand group-hover:underline truncate">
-                Ver planos
+              <span className="truncate group-hover:underline" style={{ fontSize: 11, fontWeight: 500, color: "#2d7a57" }}>
+                Ver planos e assinatura
               </span>
             </div>
           </Link>

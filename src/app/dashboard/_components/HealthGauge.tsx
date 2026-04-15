@@ -5,29 +5,46 @@ interface HealthGaugeProps {
 }
 
 const BARS = [
-  { name: "Vacinas",     pct: 92, color: "#2d7a57" },
-  { name: "Prontuários", pct: 80, color: "#1a4d35" },
-  { name: "Exames",      pct: 60, color: "#3b82f6" },
+  { name: "Vacinas",     pct: 90, color: "#22c55e" },
+  { name: "Rotina",      pct: 78, color: "#f59e0b" },
+  { name: "Peso ideal",  pct: 95, color: "#3b82f6" },
 ];
 
 export function HealthGauge({ score }: HealthGaugeProps) {
-  const circ = 188.5;
+  const r = 48;
+  const circ = 2 * Math.PI * r;
   const fill = (score / 100) * circ;
 
   return (
-    <>
+    <div
+      className="rounded-[14px]"
+      style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "18px 22px" }}
+    >
+      {/* Header */}
       <div
-        className="flex items-center gap-[18px] rounded-xl p-[18px]"
-        style={{ background: "#ffffff", border: "1px solid #e5e7eb" }}
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          color: "#6b7280",
+          textTransform: "uppercase",
+          letterSpacing: "0.06em",
+          marginBottom: 14,
+        }}
       >
-        <div className="relative flex-shrink-0" style={{ width: 80, height: 80 }}>
-          <svg width="80" height="80" viewBox="0 0 80 80" style={{ transform: "rotate(-90deg)" }}>
-            <circle cx="40" cy="40" r="30" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+        Índice de Saúde
+      </div>
+
+      {/* Layout horizontal */}
+      <div className="flex items-center gap-6">
+        {/* Gauge */}
+        <div className="relative flex-shrink-0" style={{ width: 110, height: 110 }}>
+          <svg width="110" height="110" viewBox="0 0 110 110" style={{ transform: "rotate(-90deg)" }}>
+            <circle cx="55" cy="55" r={r} fill="none" stroke="#e5e7eb" strokeWidth="9" />
             <circle
-              cx="40" cy="40" r="30"
+              cx="55" cy="55" r={r}
               fill="none"
-              stroke="#2d7a57"
-              strokeWidth="8"
+              stroke="#22c55e"
+              strokeWidth="9"
               strokeLinecap="round"
               style={{
                 strokeDasharray: `${fill} ${circ}`,
@@ -36,42 +53,47 @@ export function HealthGauge({ score }: HealthGaugeProps) {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-extrabold leading-none" style={{ fontSize: "1.375rem", color: "#1a4d35" }}>
+            <span style={{ fontSize: 26, fontWeight: 800, color: "#111827", lineHeight: 1 }}>
               {score}
             </span>
-            <span className="text-[0.6rem] text-gray-500 font-medium">/100</span>
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 600,
+                color: "#6b7280",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                marginTop: 2,
+              }}
+            >
+              PONTOS
+            </span>
           </div>
         </div>
-        <div>
-          <div className="text-[0.875rem] font-bold text-gray-900">
-            Saúde Geral — <span style={{ color: "#2d7a57" }}>Ótimo</span>
-          </div>
-          <div className="text-[0.72rem] text-gray-500 mt-0.5">Última avaliação: 3 dias atrás</div>
-        </div>
-      </div>
 
-      <div
-        className="rounded-xl p-[14px_16px] flex flex-col gap-[10px]"
-        style={{ background: "#ffffff", border: "1px solid #e5e7eb" }}
-      >
-        {BARS.map((bar) => (
-          <div key={bar.name}>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[0.75rem] font-semibold text-gray-500">{bar.name}</span>
-              <span className="text-[0.72rem] font-bold text-gray-900">{bar.pct}%</span>
+        {/* Barras */}
+        <div className="flex-1">
+          {BARS.map((bar) => (
+            <div key={bar.name} className="flex items-center gap-3 mb-3 last:mb-0">
+              <span style={{ fontSize: 13, fontWeight: 500, color: "#4b5563", width: 80, flexShrink: 0 }}>
+                {bar.name}
+              </span>
+              <div className="flex-1 rounded-full overflow-hidden" style={{ height: 8, background: "#e5e7eb" }}>
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${bar.pct}%`,
+                    background: bar.color,
+                    animation: "barGrow 1s ease-out forwards",
+                  }}
+                />
+              </div>
+              <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#374151", width: 36, textAlign: "right" }}>
+                {bar.pct}%
+              </span>
             </div>
-            <div className="rounded-full overflow-hidden" style={{ height: 6, background: "#e5e7eb" }}>
-              <div
-                className="h-full rounded-full"
-                style={{
-                  width: `${bar.pct}%`,
-                  background: bar.color,
-                  animation: "barGrow 1s ease-out forwards",
-                }}
-              />
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <style>{`
@@ -83,6 +105,6 @@ export function HealthGauge({ score }: HealthGaugeProps) {
           from { width: 0%; }
         }
       `}</style>
-    </>
+    </div>
   );
 }
