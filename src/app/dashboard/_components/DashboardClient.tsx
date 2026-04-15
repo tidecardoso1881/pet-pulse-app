@@ -97,24 +97,24 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
       {/* Serviços Próximos */}
       <ServicosProximos />
 
-      {/* Grid inferior: MeusPets+ProximosCompromissos+WeightChart (esq) + HealthGauge (dir) */}
+      {/* Grid inferior: HealthGauge+WeightChart (esq) + MeusPets+ProximosCompromissos (dir) */}
       <div className="grid grid-cols-2 gap-5 items-start">
         {/* Coluna esquerda */}
         <div className="flex flex-col gap-3">
+          <HealthGauge score={85} />
+          <WeightChart />
+        </div>
+
+        {/* Coluna direita */}
+        <div className="flex flex-col gap-3">
           {/* Meus Pets */}
           <div
-            className="rounded-[14px]"
-            style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "14px 18px" }}
+            className="rounded-[14px] flex flex-col"
+            style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "18px 20px", minHeight: 120 }}
           >
             <div className="flex items-center justify-between">
               <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: "#6b7280",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}
+                style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em" }}
               >
                 Meus Pets
               </span>
@@ -126,18 +126,12 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
 
           {/* Próximos Compromissos */}
           <div
-            className="rounded-[14px]"
-            style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "14px 18px" }}
+            className="rounded-[14px] flex flex-col"
+            style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "18px 20px", minHeight: 120 }}
           >
             <div className="flex items-center justify-between">
               <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: "#6b7280",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}
+                style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em" }}
               >
                 Próximos Compromissos
               </span>
@@ -146,13 +140,7 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
               </a>
             </div>
           </div>
-
-          {/* Evolução de Peso */}
-          <WeightChart />
         </div>
-
-        {/* Coluna direita */}
-        <HealthGauge score={85} />
       </div>
     </div>
   );
