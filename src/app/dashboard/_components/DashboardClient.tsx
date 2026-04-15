@@ -41,7 +41,7 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
     "Tutor";
 
   return (
-    <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: 20 }}>
+    <div className="px-4 py-4 lg:px-7 lg:py-6 flex flex-col gap-5">
       {/* Page Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -98,7 +98,7 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
       <ServicosProximos />
 
       {/* Grid inferior: HealthGauge+WeightChart (esq) + MeusPets+ProximosCompromissos (dir) */}
-      <div className="grid grid-cols-2 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
         {/* Coluna esquerda */}
         <div className="flex flex-col gap-3">
           <HealthGauge score={85} />
