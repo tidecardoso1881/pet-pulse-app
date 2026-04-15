@@ -42,14 +42,14 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Se já autenticado, redireciona da auth para o dashboard
-  const authPaths = ["/login", "/register"]
+  const authPaths = ["/login", "/cadastro", "/verificar", "/recuperar", "/nova-senha"]
   const isAuthPage = authPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)
   )
 
   if (isAuthPage && user) {
     const url = request.nextUrl.clone()
-    url.pathname = "/pets"
+    url.pathname = "/dashboard"
     return NextResponse.redirect(url)
   }
 

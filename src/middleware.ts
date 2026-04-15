@@ -25,7 +25,9 @@ export const config = {
     "/marketplace/:path*",
     "/notifications/:path*",
     "/login",
-    "/register",
-    "/reset-password",
+    "/cadastro",
+    "/verificar",
+    "/recuperar",
+    "/nova-senha",
   ],
 }
