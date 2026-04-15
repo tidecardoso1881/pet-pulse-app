@@ -1,6 +1,6 @@
 "use client";
 
-import { PenLine } from "lucide-react";
+import { CalendarDays, Syringe, Pill, Scale } from "lucide-react";
 
 interface Pet {
   id: string;
@@ -15,10 +15,10 @@ interface StatCardsProps {
 }
 
 const CARDS = [
-  { label: "PRÓXIMA CONSULTA",    value: "—",    sub: "Não agendada",       subClass: "",                              valueColor: "#111827" },
-  { label: "VACINAS PENDENTES",   value: "0",    sub: "✓ Atualizadas",      subClass: "text-[#2d7a57] font-semibold",  valueColor: "#1a4d35" },
-  { label: "MEDICAMENTOS ATIVOS", value: "2",    sub: "Monitoramento ativo", subClass: "",                             valueColor: "#111827" },
-  { label: "PESO DO PET",         value: "— kg", sub: "Não registrado",      subClass: "",                             valueColor: "#111827" },
+  { label: "PRÓXIMA CONSULTA",    value: "—",    sub: "Não agendada",        subClass: "",                             valueColor: "#111827", Icon: CalendarDays },
+  { label: "VACINAS PENDENTES",   value: "0",    sub: "✓ Atualizadas",       subClass: "text-[#2d7a57] font-semibold", valueColor: "#1a4d35", Icon: Syringe },
+  { label: "MEDICAMENTOS ATIVOS", value: "2",    sub: "Monitoramento ativo",  subClass: "",                             valueColor: "#111827", Icon: Pill },
+  { label: "PESO DO PET",         value: "— kg", sub: "Não registrado",       subClass: "",                             valueColor: "#111827", Icon: Scale },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -43,13 +43,9 @@ export function StatCards({ pet }: StatCardsProps) {
           <span className={`text-[0.7rem] text-gray-500 ${card.subClass}`}>
             {card.sub}
           </span>
-          <button
-            className="absolute top-3 right-3 flex items-center justify-center rounded-[6px] transition-all hover:bg-[#e8f5ef]"
-            style={{ width: 22, height: 22 }}
-            title="Editar"
-          >
-            <PenLine size={11} className="text-gray-300 hover:text-[#2d7a57]" />
-          </button>
+          <div className="absolute top-3 right-3 flex items-center justify-center">
+            <card.Icon size={14} className="text-gray-300" />
+          </div>
         </div>
       ))}
     </div>

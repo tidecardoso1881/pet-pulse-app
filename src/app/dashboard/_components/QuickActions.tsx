@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CalendarDays, FileText, Upload, Syringe } from "lucide-react";
+import { CalendarDays, FileText, Upload, Activity } from "lucide-react";
 
 const ACTIONS = [
   { label: "Agendar consulta", icon: CalendarDays, href: "/appointments/novo" },
-  { label: "Novo prontuário",  icon: FileText,     href: "/medical-records/novo" },
+  { label: "Receita/exames",   icon: FileText,     href: "/medical-records/novo" },
   { label: "Upload de exame",  icon: Upload,       href: "/exams/upload" },
-  { label: "Registrar vacina", icon: Syringe,      href: "/vaccines/novo" },
+  { label: "Registrar saúde",  icon: Activity,     href: "/health-monitoring" },
 ];
 
 export function QuickActions() {

@@ -41,18 +41,18 @@ export interface SidebarItem {
 }
 
 const NAV_ITEMS: SidebarItem[] = [
-  { label: "Painel Principal",       href: "/dashboard",         icon: <LayoutDashboard size={18} /> },
-  { label: "Meus Pets",              href: "/pets",              icon: <PawPrint size={18} /> },
-  { label: "Prontuário Digital",     href: "/medical-records",   icon: <ClipboardList size={18} /> },
-  { label: "Agenda de Cuidados",     href: "/appointments",      icon: <CalendarDays size={18} /> },
-  { label: "Vacinas",                href: "/vaccines",          icon: <Syringe size={18} /> },
-  { label: "Repositório de Exames",  href: "/exams",             icon: <FolderOpen size={18} /> },
-  { label: "Monitoramento Ativo",    href: "/health-monitoring", icon: <Activity size={18} /> },
-  { label: "Localização GPS",        href: "/gps",               icon: <MapPin size={18} /> },
-  { label: "Rotina e Alimentação",   href: "/routine",           icon: <UtensilsCrossed size={18} /> },
-  { label: "Marketplace",            href: "/marketplace",       icon: <ShoppingBag size={18} /> },
-  { label: "Notificações",           href: "/notifications",     icon: <Bell size={18} />, badge: 4 },
-  { label: "Configurações",          href: "/settings",          icon: <Settings size={18} /> },
+  { label: "Painel Principal",       href: "/dashboard",         icon: <LayoutDashboard size={15} /> },
+  { label: "Meus Pets",              href: "/pets",              icon: <PawPrint size={15} /> },
+  { label: "Prontuário Digital",     href: "/medical-records",   icon: <ClipboardList size={15} /> },
+  { label: "Agenda de Cuidados",     href: "/appointments",      icon: <CalendarDays size={15} /> },
+  { label: "Vacinas",                href: "/vaccines",          icon: <Syringe size={15} /> },
+  { label: "Repositório de Exames",  href: "/exams",             icon: <FolderOpen size={15} /> },
+  { label: "Monitoramento Ativo",    href: "/health-monitoring", icon: <Activity size={15} /> },
+  { label: "Localização GPS",        href: "/gps",               icon: <MapPin size={15} /> },
+  { label: "Rotina e Alimentação",   href: "/routine",           icon: <UtensilsCrossed size={15} /> },
+  { label: "Marketplace",            href: "/marketplace",       icon: <ShoppingBag size={15} /> },
+  { label: "Notificações",           href: "/notifications",     icon: <Bell size={15} />, badge: 4 },
+  { label: "Configurações",          href: "/settings",          icon: <Settings size={15} /> },
 ];
 
 interface SidebarProps {
@@ -108,13 +108,32 @@ export function Sidebar({
         {/* ── Logo ──────────────────────────────────────────────────────── */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-[var(--border)]">
           <Link href="/dashboard" className="flex items-center gap-2 group">
-            {/* Ícone coração-pata */}
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-brand text-white text-base font-bold select-none">
-              🐾
-            </span>
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 26 26"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M13 22s-9-5.5-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-9 12-9 12z"
+                fill="#2d7a57"
+                opacity="0.15"
+              />
+              <path
+                d="M13 22s-9-5.5-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-9 12-9 12z"
+                stroke="#2d7a57"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <circle cx="11" cy="12" r="1" fill="#2d7a57" />
+              <circle cx="15" cy="12" r="1" fill="#2d7a57" />
+              <circle cx="13" cy="14.5" r="1.4" fill="#2d7a57" />
+            </svg>
             <div className="flex flex-col leading-tight">
-              <span className="text-sm font-bold text-brand">PetPulse</span>
-              <span className="text-[9px] font-semibold tracking-widest text-[var(--content-muted)] uppercase">
+              <span className="text-[0.875rem] font-bold" style={{ color: "#1a4d35" }}>PetPulse</span>
+              <span className="text-[0.5rem] font-semibold tracking-widest uppercase" style={{ color: "#9ca3af" }}>
                 Vital Biometry
               </span>
             </div>
@@ -127,7 +146,7 @@ export function Sidebar({
               className="lg:hidden p-1 rounded text-[var(--content-muted)] hover:bg-[var(--brand-light)]"
               aria-label="Fechar menu"
             >
-              <X size={18} />
+              <X size={15} />
             </button>
           )}
         </div>
@@ -145,8 +164,8 @@ export function Sidebar({
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg",
-                      "text-sm font-medium transition-colors duration-150",
+                      "flex items-center gap-2 px-[10px] py-[7px] rounded-[7px]",
+                      "text-[0.8125rem] font-medium transition-colors duration-150",
                       "relative",
                       isActive
                         ? "bg-[var(--sidebar-active)] text-[var(--sidebar-active-text)]"
@@ -180,20 +199,20 @@ export function Sidebar({
         </nav>
 
         {/* ── Rodapé — plano atual ───────────────────────────────────────── */}
-        <div className="px-4 py-4 border-t border-[var(--border)]">
+        <div className="px-[10px] py-3 border-t border-[var(--border)]">
           <Link
             href="/settings"
-            className="flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-[var(--brand-bg)] transition-colors group"
+            className="flex items-center gap-2 rounded-[7px] px-[6px] py-2 hover:bg-[var(--brand-bg)] transition-colors group"
           >
-            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--brand-light)] text-brand">
-              <CreditCard size={14} />
+            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[var(--brand-light)] text-brand flex-shrink-0">
+              <CreditCard size={12} />
             </span>
-            <div className="flex flex-col leading-tight">
-              <span className="text-xs font-semibold text-[var(--content-secondary)]">
+            <div className="flex flex-col leading-tight min-w-0">
+              <span className="text-[0.7rem] font-semibold text-[var(--content-secondary)] truncate">
                 {planName}
               </span>
-              <span className="text-[11px] text-brand group-hover:underline">
-                Ver planos e assinatura
+              <span className="text-[0.65rem] text-brand group-hover:underline truncate">
+                Ver planos
               </span>
             </div>
           </Link>
