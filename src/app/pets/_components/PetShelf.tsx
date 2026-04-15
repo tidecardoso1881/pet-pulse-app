@@ -50,6 +50,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
   const [form, setForm] = useState(EMPTY_FORM);
   const [photoFile, setPhotoFile] = useState<File | null | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
@@ -66,6 +67,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
       setForm(EMPTY_FORM);
     }
     setPhotoFile(undefined);
+    setSubmitError(null);
     setShowDeleteConfirm(false);
   }, [isOpen, mode, pet]);
 
@@ -91,6 +93,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
     e.preventDefault();
     if (!form.name.trim()) return;
     setLoading(true);
+    setSubmitError(null);
     const supabase = createClient();
     try {
       if (mode === "add") {
@@ -107,7 +110,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
           })
           .select("id")
           .single();
-        if (error || !newPet) throw error;
+        if (error || !newPet) throw new Error(error?.message ?? "Erro ao cadastrar pet.");
         if (photoFile) {
           const url = await uploadPhoto(newPet.id);
           if (url) await supabase.from("pets").update({ photo_url: url }).eq("id", newPet.id);
@@ -115,7 +118,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
       } else if (mode === "edit" && pet) {
         let photoUrl = pet.photo_url;
         if (photoFile) photoUrl = await uploadPhoto(pet.id);
-        await supabase.from("pets").update({
+        const { error } = await supabase.from("pets").update({
           name: form.name.trim(),
           species: form.species,
           gender: form.gender,
@@ -125,8 +128,11 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
           photo_url: photoUrl,
           updated_at: new Date().toISOString(),
         }).eq("id", pet.id);
+        if (error) throw new Error(error.message ?? "Erro ao salvar alterações.");
       }
       onSaved();
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Ocorreu um erro. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -316,6 +322,24 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
               />
             </div>
           </div>
+
+          {/* Erro inline */}
+          {submitError && (
+            <div
+              style={{
+                marginBottom: 12,
+                padding: "10px 14px",
+                background: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: 8,
+                fontSize: 13,
+                color: "#b91c1c",
+                fontWeight: 500,
+              }}
+            >
+              {submitError}
+            </div>
+          )}
 
           {/* Submit */}
           <button
