@@ -42,7 +42,7 @@ export function WeightChart() {
           marginTop: 16,
           border: "1px dashed #e5e7eb",
           borderRadius: 10,
-          height: 160,
+          height: 130,
           background: "transparent",
         }}
       />

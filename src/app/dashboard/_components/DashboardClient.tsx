@@ -60,7 +60,7 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
             Painel Principal
           </h1>
           <p style={{ fontSize: "13.5px", color: "#6b7280", marginTop: 6 }}>
-            Olá, {firstName}! Aqui está o resumo dos seus pets.
+            Olá, <span style={{ color: "#2d7a57", fontWeight: 600 }}>{firstName}</span>! Aqui está o resumo dos seus pets.
           </p>
         </div>
 
@@ -97,15 +97,10 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
       {/* Serviços Próximos */}
       <ServicosProximos />
 
-      {/* Grid inferior: WeightChart (esq) + HealthGauge+MeusPets+ProximosCompromissos (dir) */}
-      <div className="grid grid-cols-2 gap-4 items-start">
+      {/* Grid inferior: MeusPets+ProximosCompromissos+WeightChart (esq) + HealthGauge (dir) */}
+      <div className="grid grid-cols-2 gap-5 items-start">
         {/* Coluna esquerda */}
-        <WeightChart />
-
-        {/* Coluna direita */}
         <div className="flex flex-col gap-3">
-          <HealthGauge score={85} />
-
           {/* Meus Pets */}
           <div
             className="rounded-[14px]"
@@ -151,7 +146,13 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
               </a>
             </div>
           </div>
+
+          {/* Evolução de Peso */}
+          <WeightChart />
         </div>
+
+        {/* Coluna direita */}
+        <HealthGauge score={85} />
       </div>
     </div>
   );

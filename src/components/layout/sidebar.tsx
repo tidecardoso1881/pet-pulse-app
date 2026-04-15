@@ -190,8 +190,8 @@ export function Sidebar({
             className="group flex items-center gap-[10px] rounded-[10px] mx-[10px] my-3 px-3 py-[10px] bg-[#e8f5ef] border border-[#b8dfc8] hover:bg-[#EAF6F0] transition-colors"
           >
             <span
-              className="flex items-center justify-center flex-shrink-0 rounded-full bg-white border border-[#b8dfc8]"
-              style={{ width: 28, height: 28 }}
+              className="flex items-center justify-center flex-shrink-0 bg-white border border-[#b8dfc8]"
+              style={{ width: 28, height: 28, borderRadius: 7 }}
             >
               <CreditCard size={16} style={{ color: "#2d7a57" }} />
             </span>
