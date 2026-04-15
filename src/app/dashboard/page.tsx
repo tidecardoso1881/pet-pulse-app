@@ -21,12 +21,14 @@ export default async function DashboardPage() {
 
   const fullName: string =
     user.user_metadata?.full_name ?? user.email?.split("@")[0] ?? "Tutor";
-  const initials = fullName
-    .split(" ")
-    .slice(0, 2)
-    .map((n: string) => n[0])
-    .join("")
-    .toUpperCase();
+  const initials = user.user_metadata?.full_name
+    ? user.user_metadata.full_name
+        .split(" ")
+        .map((n: string) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
+    : user.email?.[0]?.toUpperCase() ?? "U";
 
   return (
     <AppShell
