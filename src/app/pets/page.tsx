@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { PetsClient } from "./_components/PetsClient";
@@ -38,7 +39,9 @@ export default async function PetsPage() {
       }}
       notificationCount={4}
     >
-      <PetsClient pets={pets ?? []} userId={user.id} />
+      <Suspense>
+        <PetsClient pets={pets ?? []} userId={user.id} />
+      </Suspense>
     </AppShell>
   );
 }
