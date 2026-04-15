@@ -69,8 +69,8 @@ const plans = [
 
 export default function Plans() {
   return (
-    <section className="bg-[#FAF9F7] py-24 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section className="bg-[#FAF9F7] py-20 px-4">
+      <div className="max-w-7xl mx-auto px-2">
         <div className="text-center mb-12">
           <p className="text-xs font-semibold text-[#2d7a57] uppercase tracking-widest mb-3">
             Planos
