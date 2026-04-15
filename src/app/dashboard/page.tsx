@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import { AppShell } from "@/components/layout/app-shell";
 import { DashboardClient } from "./_components/DashboardClient";
 
@@ -11,11 +10,12 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  // Proteção já feita pelo middleware — se user for null aqui é edge case
+  if (!user) return null;
 
   const { data: pets } = await supabase
     .from("pets")
-    .select("id, name, species, breed, avatar_url")
+    .select("id, name, species, breed, photo_url")
     .eq("owner_id", user.id)
     .order("created_at", { ascending: true });
 
