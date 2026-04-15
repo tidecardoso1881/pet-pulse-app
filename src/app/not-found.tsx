@@ -7,7 +7,18 @@ export default function NotFound() {
   const router = useRouter();
 
   return (
-    <>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#FAF9F7",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
       <style>{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(16px); }
@@ -344,6 +355,6 @@ export default function NotFound() {
           © 2026 PetPulse · Sinergia Soft Tecnologia e Inovação
         </p>
       </div>
-    </>
+    </div>
   );
 }
