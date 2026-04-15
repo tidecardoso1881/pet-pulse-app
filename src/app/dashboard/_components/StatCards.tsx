@@ -45,7 +45,7 @@ const CARDS = [
   {
     label: "ÚLTIMO PESO",
     value: "— kg",
-    sub: "",
+    sub: "Não registrado",
     subColor: "#6b7280",
     valueColor: "#111827",
     Icon: Scale,

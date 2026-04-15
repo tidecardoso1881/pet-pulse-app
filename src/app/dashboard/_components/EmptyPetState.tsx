@@ -14,7 +14,7 @@ export function EmptyPetState() {
         padding: "44px 32px",
       }}
     >
-      <div className="text-[28px] mb-[14px]">🐾🐾🐾</div>
+      <div className="text-[28px] mb-[14px]">🐾🐾</div>
       <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1f2937", marginBottom: 8 }}>
         Cadastre seu primeiro pet
       </h2>

@@ -1,10 +1,10 @@
 "use client";
 
-import { Stethoscope, Dog, Scissors, Home, Heart, ShoppingBag } from "lucide-react";
+import { Activity, Clock, Scissors, Home, Heart, ShoppingBag } from "lucide-react";
 
 const SERVICOS = [
-  { titulo: "Consultas próximas", sub: "2 clínicas · 1,2 km",      Icon: Stethoscope, bg: "#fee2e2", color: "#ef4444" },
-  { titulo: "Passeadores",        sub: "3 disponíveis hoje",        Icon: Dog,         bg: "#dcfce7", color: "#16a34a" },
+  { titulo: "Consultas próximas", sub: "2 clínicas · 1,2 km",      Icon: Activity, bg: "#fee2e2", color: "#ef4444" },
+  { titulo: "Passeadores",        sub: "3 disponíveis hoje",        Icon: Clock,    bg: "#dcfce7", color: "#16a34a" },
   { titulo: "Banho e Tosa",       sub: "A partir de R$ 60",         Icon: Scissors,    bg: "#ede9fe", color: "#7c3aed" },
   { titulo: "Hospedagem",         sub: "Vagas disponíveis",         Icon: Home,        bg: "#fef3c7", color: "#f59e0b" },
   { titulo: "Cuidadores",         sub: "Pet sitters verificados",   Icon: Heart,       bg: "#fce7f3", color: "#ec4899" },

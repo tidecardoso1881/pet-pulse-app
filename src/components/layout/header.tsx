@@ -85,12 +85,12 @@ export function Header({
             <span
               className="absolute rounded-full"
               style={{
-                top: 0,
-                right: 0,
-                width: 6,
-                height: 6,
+                top: -2,
+                right: -2,
+                width: 7,
+                height: 7,
                 background: "#f97316",
-                transform: "translate(2px, -2px)",
+                border: "1.5px solid #FDFDFC",
               }}
             />
           )}
