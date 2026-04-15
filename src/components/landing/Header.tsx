@@ -14,9 +14,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
             <circle cx="14" cy="14" r="14" fill="#2d7a57" />
-            <path d="M9 14c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5-5-2.24-5-5z" fill="white" opacity="0.3"/>
-            <circle cx="14" cy="14" r="2.5" fill="white"/>
-            <path d="M14 8v2M14 18v2M8 14h2M18 14h2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            <path d="M14 7v14M7 14h14" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
           </svg>
           <span className="text-xl font-bold text-[#1a4d35]">PetPulse</span>
         </Link>

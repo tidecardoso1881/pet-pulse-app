@@ -7,11 +7,17 @@ export default function Hero() {
       <div className="max-w-6xl mx-auto">
         {/* Badge */}
         <div className="flex items-center gap-2 mb-6">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#43a87a] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#2d7a57]" />
-          </span>
-          <span className="text-xs font-semibold text-[#2d7a57] uppercase tracking-wider">
+          <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden>
+            <polyline
+              points="0,7 4,7 6.5,1 9.5,13 12,7 16,7 17.5,4.5 19,7 22,7"
+              stroke="#2d7a57"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+          <span className="text-xs font-semibold text-[#2d7a57] tracking-wide">
             Plataforma de Saúde Pet
           </span>
         </div>
