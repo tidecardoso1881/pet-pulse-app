@@ -30,7 +30,7 @@ function Stars() {
 
 export default function Testimonials() {
   return (
-    <section className="bg-[#FAF9F7] py-20 px-6">
+    <section className="bg-[#FAF9F7] py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <p className="text-xs font-semibold text-[#2d7a57] uppercase tracking-widest mb-3">
           Depoimentos

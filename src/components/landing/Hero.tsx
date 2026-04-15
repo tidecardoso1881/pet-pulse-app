@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="bg-white pt-16 pb-12 px-6">
+    <section className="bg-white pt-20 pb-14 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Badge */}
         <div className="flex items-center gap-2 mb-6">
@@ -23,7 +23,7 @@ export default function Hero() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold text-[#1a4d35] leading-tight mb-5 max-w-2xl">
+        <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-[#1a4d35] leading-[1.15] mb-6 max-w-3xl">
           Toda a saúde do seu pet{" "}
           <span className="text-[#43a87a]">em um só lugar</span>
         </h1>
@@ -39,20 +39,20 @@ export default function Hero() {
         <div className="flex flex-wrap gap-3 mb-12">
           <Link
             href="/register"
-            className="inline-flex items-center px-6 py-3 text-sm font-semibold text-white bg-[#2d7a57] rounded-lg hover:bg-[#1a4d35] transition-colors"
+            className="inline-flex items-center px-7 py-3.5 text-sm font-semibold text-white bg-[#2d7a57] rounded-xl hover:bg-[#1a4d35] transition-colors"
           >
             Começar gratuitamente →
           </Link>
           <Link
             href="/clinica-parceiro"
-            className="inline-flex items-center px-6 py-3 text-sm font-semibold text-[#1a4d35] border border-[#2d7a57] rounded-lg hover:bg-[#f4fbf7] transition-colors"
+            className="inline-flex items-center px-7 py-3.5 text-sm font-semibold text-[#1a4d35] border border-[#2d7a57] rounded-xl hover:bg-[#f4fbf7] transition-colors"
           >
             Sua clínica ou parceiro
           </Link>
         </div>
 
         {/* Hero image */}
-        <div className="relative w-full rounded-[20px] overflow-hidden" style={{ height: "clamp(240px, 35vw, 380px)" }}>
+        <div className="relative w-full rounded-[20px] overflow-hidden" style={{ height: "clamp(300px, 42vw, 480px)" }}>
           <Image
             src="/images/hero-dog.png"
             alt="Cachorro dourado olhando para a câmera — PetPulse cuida da saúde do seu pet"
