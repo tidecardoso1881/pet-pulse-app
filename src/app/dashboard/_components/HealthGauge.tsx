@@ -6,9 +6,8 @@ interface HealthGaugeProps {
 
 const BARS = [
   { name: "Vacinas",     pct: 92, color: "#2d7a57" },
-  { name: "Prontuários", pct: 80, color: "#2d7a57" },
-  { name: "Exames",      pct: 60, color: "#f59e0b" },
-  { name: "Dieta",       pct: 75, color: "#1565c0" },
+  { name: "Prontuários", pct: 80, color: "#1a4d35" },
+  { name: "Exames",      pct: 60, color: "#3b82f6" },
 ];
 
 export function HealthGauge({ score }: HealthGaugeProps) {
