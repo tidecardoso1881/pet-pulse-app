@@ -6,14 +6,26 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  /*
+   * Inclui SOMENTE as rotas que precisam de auth.
+   * / e /clinica-parceiro são públicas — não entram aqui.
+   */
   matcher: [
-    /*
-     * Aplica middleware apenas em rotas autenticadas.
-     * Exclui:
-     *  - Rotas públicas: / e /clinica-parceiro
-     *  - Assets estáticos do Next.js
-     *  - Arquivos de imagem/fonte
-     */
-    "/((?!$|clinica-parceiro|_next/static|_next/image|favicon\\.ico|images/|fonts/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff|woff2)$).*)",
+    "/dashboard/:path*",
+    "/pets/:path*",
+    "/appointments/:path*",
+    "/vaccines/:path*",
+    "/vets/:path*",
+    "/settings/:path*",
+    "/medical-records/:path*",
+    "/exams/:path*",
+    "/health-monitoring/:path*",
+    "/gps/:path*",
+    "/routine/:path*",
+    "/marketplace/:path*",
+    "/notifications/:path*",
+    "/login",
+    "/register",
+    "/reset-password",
   ],
 }
