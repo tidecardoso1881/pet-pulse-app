@@ -24,7 +24,7 @@ const CARDS = [
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function StatCards({ pet }: StatCardsProps) {
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {CARDS.map((card) => (
         <div
           key={card.label}
