@@ -14,6 +14,11 @@ export interface Pet {
   photo_url: string | null;
 }
 
+const GENDER_DISPLAY: Record<string, string> = {
+  male: "Macho",
+  female: "Fêmea",
+};
+
 interface PetCardProps {
   pet: Pet;
   onEdit: (pet: Pet) => void;
@@ -98,7 +103,7 @@ export function PetCard({ pet, onEdit }: PetCardProps) {
                 color: "#4b5563",
               }}
             >
-              {pet.species}{pet.gender ? ` · ${pet.gender}` : ""}
+              {pet.species}{pet.gender ? ` · ${GENDER_DISPLAY[pet.gender] ?? pet.gender}` : ""}
             </span>
           </div>
           {pet.breed && (

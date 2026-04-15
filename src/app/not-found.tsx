@@ -346,14 +346,9 @@ export default function NotFound() {
               <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            Ir para o Início
+            Ir para o início
           </Link>
         </div>
-
-        {/* Footer */}
-        <p className="nf-footer" style={{ marginTop: 52, fontSize: "0.78rem", color: "#9ca3af" }}>
-          © 2026 PetPulse · Sinergia Soft Tecnologia e Inovação
-        </p>
       </div>
     </div>
   );
