@@ -24,6 +24,17 @@ const EMPTY_FORM = {
   weight_kg: "",
 };
 
+// DB constraint: gender IN ('male', 'female')
+// UI label:      'Macho' / 'Fêmea'
+const GENDER_TO_DB: Record<string, string> = {
+  Macho: "male",
+  Fêmea: "female",
+};
+const GENDER_FROM_DB: Record<string, string> = {
+  male: "Macho",
+  female: "Fêmea",
+};
+
 const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
   padding: "10px 14px",
@@ -58,7 +69,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
       setForm({
         name: pet.name,
         species: pet.species,
-        gender: pet.gender ?? "Macho",
+        gender: GENDER_FROM_DB[pet.gender ?? ""] ?? "Macho",
         breed: pet.breed ?? "",
         birth_date: pet.birth_date ?? "",
         weight_kg: pet.weight_kg != null ? String(pet.weight_kg) : "",
@@ -95,6 +106,8 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
     setLoading(true);
     setSubmitError(null);
     const supabase = createClient();
+    const genderDb = GENDER_TO_DB[form.gender] ?? form.gender;
+
     try {
       if (mode === "add") {
         const { data: newPet, error } = await supabase
@@ -103,7 +116,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
             owner_id: userId,
             name: form.name.trim(),
             species: form.species,
-            gender: form.gender,
+            gender: genderDb,
             breed: form.breed.trim() || null,
             birth_date: form.birth_date || null,
             weight_kg: form.weight_kg ? parseFloat(form.weight_kg) : null,
@@ -121,7 +134,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
         const { error } = await supabase.from("pets").update({
           name: form.name.trim(),
           species: form.species,
-          gender: form.gender,
+          gender: genderDb,
           breed: form.breed.trim() || null,
           birth_date: form.birth_date || null,
           weight_kg: form.weight_kg ? parseFloat(form.weight_kg) : null,

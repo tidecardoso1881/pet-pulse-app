@@ -110,35 +110,80 @@ export function DashboardClient({ user, pets }: DashboardClientProps) {
           {/* Meus Pets */}
           <div
             className="rounded-[14px] flex flex-col"
-            style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "18px 20px", minHeight: 120 }}
+            style={{
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              padding: "18px 20px",
+              minHeight: 120,
+            }}
           >
-            <div className="flex items-center justify-between">
-              <span
-                style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em" }}
+            <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111827" }}>Meus Pets</h3>
+              <a
+                href="/pets"
+                style={{ fontSize: 12, color: "#2d7a57", fontWeight: 600, textDecoration: "none" }}
               >
-                Meus Pets
-              </span>
-              <a href="/pets" style={{ fontSize: 12, fontWeight: 600, color: "#2d7a57" }}>
                 Ver todos
               </a>
             </div>
+            {pets.length === 0 ? (
+              <p style={{ fontSize: 13, color: "#9ca3af", textAlign: "center", marginTop: 12 }}>
+                Nenhum pet cadastrado
+              </p>
+            ) : (
+              <div className="flex flex-col" style={{ gap: 8 }}>
+                {pets.slice(0, 3).map((p) => (
+                  <div key={p.id} className="flex items-center" style={{ gap: 10 }}>
+                    <div
+                      className="flex items-center justify-center rounded-full flex-shrink-0"
+                      style={{
+                        width: 32,
+                        height: 32,
+                        background: p.species === "Gato" ? "#fef3c7" : "#e8f5ef",
+                        border: `1px solid ${p.species === "Gato" ? "#fde68a" : "#d4ead8"}`,
+                        fontSize: 14,
+                        overflow: "hidden",
+                      }}
+                    >
+                      {p.photo_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={p.photo_url} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      ) : (
+                        <span>{p.species === "Gato" ? "🐱" : "🐕"}</span>
+                      )}
+                    </div>
+                    <div>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>{p.name}</p>
+                      <p style={{ fontSize: 11, color: "#6b7280" }}>{p.species}{p.breed ? ` · ${p.breed}` : ""}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Próximos Compromissos */}
           <div
             className="rounded-[14px] flex flex-col"
-            style={{ background: "#ffffff", border: "1px solid #e5e7eb", padding: "18px 20px", minHeight: 120 }}
+            style={{
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              padding: "18px 20px",
+              minHeight: 120,
+            }}
           >
-            <div className="flex items-center justify-between">
-              <span
-                style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em" }}
+            <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111827" }}>Próximos Compromissos</h3>
+              <a
+                href="/agenda"
+                style={{ fontSize: 12, color: "#2d7a57", fontWeight: 600, textDecoration: "none" }}
               >
-                Próximos Compromissos
-              </span>
-              <a href="/appointments" style={{ fontSize: 12, fontWeight: 600, color: "#2d7a57" }}>
-                Ver todos
+                Ver agenda
               </a>
             </div>
+            <p style={{ fontSize: 13, color: "#9ca3af", textAlign: "center", marginTop: 12 }}>
+              Nenhum compromisso agendado
+            </p>
           </div>
         </div>
       </div>
