@@ -16,7 +16,7 @@ interface Pet {
   name: string;
   species: string;
   breed: string;
-  avatar_url?: string;
+  photo_url?: string;
 }
 
 interface DashboardClientProps {
