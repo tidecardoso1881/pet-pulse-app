@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useCallback, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Plus } from "lucide-react";
 import { PetCard } from "./PetCard";
 import type { Pet } from "./PetCard";
@@ -21,11 +21,21 @@ const FILTERS = [
 
 export function PetsClient({ pets: initialPets, userId }: PetsClientProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [search, setSearch]       = useState("");
   const [filter, setFilter]       = useState("Todos");
   const [shelfOpen, setShelfOpen] = useState(false);
   const [shelfMode, setShelfMode] = useState<"add" | "edit">("add");
   const [editingPet, setEditingPet] = useState<Pet | null>(null);
+
+  useEffect(() => {
+    if (searchParams.get("action") === "new") {
+      setShelfMode("add");
+      setEditingPet(null);
+      setShelfOpen(true);
+      router.replace("/pets");
+    }
+  }, [searchParams, router]);
 
   const filtered = initialPets.filter((p) => {
     const matchFilter = filter === "Todos" || p.species === filter;
