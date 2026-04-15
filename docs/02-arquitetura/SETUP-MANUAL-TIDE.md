@@ -15,7 +15,7 @@
 2. Clique em **"New Project"**
 3. Preencha:
    - **Name:** `pet-pulse-app`
-   - **Database Password:** (crie uma senha forte e guarde bem)
+   - **Database Password:** (crie uma senha forte e guarde bem — não anote aqui)
    - **Region:** `South America (São Paulo)` → `sa-east-1`
    - **Plan:** Free
 4. Clique em **"Create new project"**
@@ -25,7 +25,7 @@
 
 1. No menu lateral, clique em **"Project Settings"** (ícone de engrenagem)
 2. Clique em **"API"**
-3. Copie e salve em local seguro:
+3. Copie e salve em local seguro (use o `.env.local` — não anote aqui no arquivo):
    - **Project URL** → será a `NEXT_PUBLIC_SUPABASE_URL`
    - **anon / public key** → será a `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - **service_role key** (secret) → será a `SUPABASE_SERVICE_ROLE_KEY`
@@ -353,21 +353,4 @@ Crie um arquivo `.env.local` na raiz do projeto (este arquivo **não vai para o 
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=https://SEU_PROJECT_ID.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_anon_key_aqui
-SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key_aqui
-```
-
----
-
-## Checklist Final
-
-- [ ] Supabase project criado em São Paulo
-- [ ] 9 tabelas criadas sem erros
-- [ ] 3 storage buckets criados (pet-photos, exams-documents, avatars)
-- [ ] Vercel conectado ao GitHub
-- [ ] Variáveis de ambiente adicionadas no Vercel
-- [ ] `.env.local` criado na máquina local
-- [ ] URL do Vercel adicionada no Supabase Auth
-
----
-
-*Após completar tudo isso, avise o Gerente para iniciarmos o EP-00 (Autenticação).*
+SUPABASE
