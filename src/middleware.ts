@@ -7,6 +7,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    /*
+     * Aplica middleware apenas em rotas autenticadas.
+     * Exclui:
+     *  - Rotas públicas: / e /clinica-parceiro
+     *  - Assets estáticos do Next.js
+     *  - Arquivos de imagem/fonte
+     */
+    "/((?!$|clinica-parceiro|_next/static|_next/image|favicon\\.ico|images/|fonts/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff|woff2)$).*)",
   ],
 }
