@@ -45,7 +45,7 @@ export function Header({
       </button>
 
       {/* Busca global */}
-      <div className="relative" style={{ width: 280 }}>
+      <div className="relative hidden sm:block" style={{ width: 280 }}>
         <Search
           size={15}
           className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
