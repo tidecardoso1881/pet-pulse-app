@@ -60,17 +60,17 @@
   --border-focus: #2d7a57;
 
   /* Sidebar */
-  --sidebar-bg:          #ffffff;
+  --sidebar-bg:          #FDFDFC;
   --sidebar-active:      #e8f5ef;
   --sidebar-active-text: #2d7a57;
-  --sidebar-text:        #374151;
+  --sidebar-text:        #4b5563;
   --sidebar-text-muted:  #6b7280;
-  --sidebar-width:       140px;
+  --sidebar-width:       220px;
 
   /* Header */
-  --header-height: 56px;
-  --header-bg:     #ffffff;
-  --header-border: #e8ede8;
+  --header-height: 60px;
+  --header-bg:     #FDFDFC;
+  --header-border: #e5e7eb;
 
   /* Raios de borda */
   --radius-card:  12px;

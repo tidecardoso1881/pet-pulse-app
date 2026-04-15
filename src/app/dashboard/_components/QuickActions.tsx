@@ -1,29 +1,29 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CalendarDays, FileText, Upload, Activity } from "lucide-react";
+import { Calendar, FileText, Upload, Syringe } from "lucide-react";
 
 const ACTIONS = [
-  { label: "Agendar consulta", icon: CalendarDays, href: "/appointments/novo" },
-  { label: "Receita/exames",   icon: FileText,     href: "/medical-records/novo" },
-  { label: "Upload de exame",  icon: Upload,       href: "/exams/upload" },
-  { label: "Registrar saúde",  icon: Activity,     href: "/health-monitoring" },
+  { label: "Agendar consulta", icon: Calendar,  bg: "#dbeafe", color: "#3b82f6", href: "/appointments/novo" },
+  { label: "Novo prontuário",  icon: FileText,  bg: "#e8f5ef", color: "#2d7a57", href: "/medical-records/novo" },
+  { label: "Upload de exame",  icon: Upload,    bg: "#ede9fe", color: "#7c3aed", href: "/exams/upload" },
+  { label: "Registrar vacina", icon: Syringe,   bg: "#fef3c7", color: "#f59e0b", href: "/vaccines/novo" },
 ];
 
 export function QuickActions() {
   const router = useRouter();
   return (
     <div className="grid grid-cols-4 gap-3">
-      {ACTIONS.map(({ label, icon: Icon, href }) => (
+      {ACTIONS.map(({ label, icon: Icon, bg, color, href }) => (
         <button
           key={label}
           onClick={() => router.push(href)}
-          className="group flex flex-col items-center gap-2 bg-white rounded-xl p-[14px_12px] transition-all"
-          style={{ border: "1px solid #e5e7eb" }}
+          className="group flex flex-col items-center bg-white rounded-[14px] transition-all"
+          style={{ border: "1px solid #e5e7eb", padding: "18px 16px", gap: 10 }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement;
-            el.style.borderColor = "#43a87a";
-            el.style.boxShadow = "0 2px 8px rgba(45,122,87,0.1)";
+            el.style.borderColor = "#b8dfc8";
+            el.style.boxShadow = "0 2px 8px rgba(45,122,87,0.08)";
             el.style.transform = "translateY(-1px)";
           }}
           onMouseLeave={(e) => {
@@ -34,12 +34,12 @@ export function QuickActions() {
           }}
         >
           <div
-            className="flex items-center justify-center rounded-[10px]"
-            style={{ width: 38, height: 38, background: "#e8f5ef" }}
+            className="flex items-center justify-center rounded-[11px]"
+            style={{ width: 40, height: 40, background: bg }}
           >
-            <Icon size={18} style={{ color: "#2d7a57" }} />
+            <Icon size={19} style={{ color }} />
           </div>
-          <span className="text-[0.78rem] font-semibold text-gray-900 text-center leading-tight">
+          <span style={{ fontSize: 13, fontWeight: 500, color: "#1f2937", textAlign: "center", lineHeight: 1.3 }}>
             {label}
           </span>
         </button>
