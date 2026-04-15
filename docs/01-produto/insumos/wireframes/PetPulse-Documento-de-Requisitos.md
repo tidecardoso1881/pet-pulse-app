@@ -148,7 +148,8 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
     </div>
 
     <h3>Modelo de Negócio</h3>
-    <p>Freemium com planos de assinatura mensal. Quatro planos: <strong>Gratuito (R$0)</strong>, <strong>Essencial (R$29)</strong>, <strong>Premium (R$49)</strong> e <strong>Família (R$69)</strong>.</p>
+    <p>Freemium com planos de assinatura mensal. Quatro planos: <strong>Gratuito (R$0)</strong>, <strong>Essencial (R$25)</strong>, <strong>Premium (R$45)</strong> e <strong>Família (R$69)</strong>.</p>
+    <div class="note">⚠️ Preços definidos pelas imagens de referência (verdade absoluta): Essencial R$25/mês · Premium R$45/mês · Família R$69/mês</div>
 
     <h3>Premissas Técnicas</h3>
     <ul>
@@ -174,8 +175,8 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
       <tr><td>Verde Escuro (Primary)</td><td><code>#1a4d35</code></td><td>Títulos principais, textos de destaque</td></tr>
       <tr><td>Verde Médio (Brand)</td><td><code>#2d7a57</code></td><td>Botões primários, links, ícones ativos</td></tr>
       <tr><td>Verde Menta (Accent)</td><td><code>#43a87a</code></td><td>Badges, hovers, gradientes</td></tr>
-      <tr><td>Bege / Off-White (Background)</td><td><code>#f5f2ec</code></td><td>Fundo geral da página</td></tr>
-      <tr><td>Branco</td><td><code>#ffffff</code></td><td>Cards, modais, superfícies</td></tr>
+      <tr><td>Off-White Escuro (Surface/Seções)</td><td><code>#FAF9F7</code></td><td>Fundo de seções alternadas (features, planos, depoimentos)</td></tr>
+      <tr><td>Off-White Claro (Base)</td><td><code>#FDFDFC</code></td><td>Fundo base da página, cards, modais, superfícies</td></tr>
       <tr><td>Verde Claro (Sucesso)</td><td><code>#e8f5ef</code></td><td>Background de alertas positivos</td></tr>
       <tr><td>Laranja (Alerta)</td><td><code>#f59e0b</code></td><td>Medicações, alertas médios</td></tr>
       <tr><td>Vermelho claro (Crítico)</td><td><code>#fce4ec</code></td><td>Alergias, vacinas atrasadas</td></tr>
@@ -340,14 +341,14 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
     <p><strong>CTAs lado a lado:</strong></p>
     <ul>
       <li>Botão primário verde: <strong>"Começar gratuitamente →"</strong></li>
-      <li>Botão outline: <strong>"Sou clínica ou parceiro"</strong> → leva a /clinica-parceiro</li>
+      <li>Botão outline: <strong>"Sua clínica ou parceiro"</strong> → leva a /clinica-parceiro</li>
     </ul>
 
     <h3>4.3 Imagem Hero</h3>
     <p>Foto de cachorro Golden Retriever em close (olho), com overlay de ícone de pulso cardíaco em verde, estilo "tech biométrico". Imagem ocupa a largura total com cantos arredondados.</p>
 
     <h3>4.4 Seção Funcionalidades</h3>
-    <p><strong>Label:</strong> <span style="color:#2d7a57;font-weight:600;font-size:.9em;letter-spacing:1px">FUNCIONALIDADES</span></p>
+    <p><strong>Label:</strong> <span style="color:#2d7a57;font-weight:600;font-size:.9em;letter-spacing:1px">FUNCIONALIDADES GERAIS</span></p>
     <p><strong>Título:</strong> "Tudo que seu pet precisa, ao alcance da mão"</p>
     <p>Grid 3 colunas de cards:</p>
     <table>
@@ -399,7 +400,7 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
         </ul>
       </div>
       <div class="card">
-        <h4>Essencial — R$ 29,00 <span class="badge-green">MAIS POPULAR</span></h4>
+        <h4>Essencial — R$ 25,00 <span class="badge-green">MAIS POPULAR</span></h4>
         <p>Badge verde no topo. Borda verde destacada. Botão primário verde "Começar".</p>
         <ul>
           <li>Histórico completo de saúde</li>
@@ -410,7 +411,7 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
         </ul>
       </div>
       <div class="card">
-        <h4>Premium — R$ 49,00 <span class="badge-orange">RECOMENDADO</span></h4>
+        <h4>Premium — R$ 45,00 <span class="badge-orange">RECOMENDADO</span></h4>
         <p>Badge laranja no topo. Borda laranja. Botão outline "Começar".</p>
         <ul>
           <li>Tudo do Essencial</li>
@@ -440,7 +441,7 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
       <tr><th>Estrelas</th><th>Depoimento</th><th>Autor</th><th>Descrição</th></tr>
       <tr><td>⭐⭐⭐⭐⭐</td><td>"Com o PetPulse, nunca mais esqueci uma vacina. Meus pets estão sempre com a saúde em dia!"</td><td>Mariana Costa</td><td>Tutora de 2 pets</td></tr>
       <tr><td>⭐⭐⭐⭐⭐</td><td>"Revolucionou a forma como acompanho meus pacientes. Os prontuários digitais são impecáveis."</td><td>Dr. Rafael Souza</td><td>Veterinário</td></tr>
-      <tr><td>⭐⭐⭐⭐½</td><td>"A interface é linda e super intuitiva. Consigo gerenciar a rotina dos meus gatos facilmente."</td><td>Juliana Mendes</td><td>Tutora de 3 gatos</td></tr>
+      <tr><td>⭐⭐⭐⭐⭐</td><td>"A interface é linda e super intuitiva. Consigo gerenciar a rotina dos meus gatos facilmente."</td><td>Juliana Mendes</td><td>Tutora de 3 gatos</td></tr>
     </table>
 
     <h3>4.8 Seção "Escolha seu Perfil"</h3>
@@ -1411,8 +1412,8 @@ footer{background:#1a2e1a;color:#a8ffc0;text-align:center;padding:30px;margin-to
       <tr>
         <th>Feature</th>
         <th>Gratuito (R$0)</th>
-        <th>Essencial (R$29)</th>
-        <th>Premium (R$49)</th>
+        <th>Essencial (R$25)</th>
+        <th>Premium (R$45)</th>
         <th>Família (R$69)</th>
       </tr>
       <tr><td>Cadastro do pet</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>

@@ -85,6 +85,9 @@ const config: Config = {
           "text-muted":"#6b7280",  // Texto desabilitado
         },
 
+        // Landing page tokens
+        "brand-ultra": "#f4fbf7",
+
         // Backward compat (usado pelo shadcn gerado)
         background: "var(--background)",
         foreground:  "var(--foreground)",

@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(npm run:*)",
+      "Bash(npx next:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"require\\('@supabase/supabase-js'\\)\")"
     ]
   }
 }

@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PetPulse — Protótipo EP-00: Autenticação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  /* ── DESIGN TOKENS ── */
+  :root {
+    --brand:        #2d7a57;
+    --brand-dark:   #1a4d35;
+    --brand-accent: #43a87a;
+    --brand-light:  #edf7f1;
+    --brand-ultra:  #f4fbf7;
+    --surface:      #FAF9F7;  /* seções alternadas */
+    --white:        #FDFDFC;  /* fundo base */
+    --text:         #111827;
+    --text-2:       #374151;
+    --muted:        #6b7280;
+    --border:       #e5e7eb;
+    --r:     12px;
+    --r-sm:   8px;
+    --r-lg:  20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 32px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PROTO NAV (padrão PetPulse) ── */
+  .proto-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #1a2e22;
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 20px; height: 32px;
+  }
+  .proto-nav span {
+    color: #9ca3af; font-size: 11px; margin-right: 8px;
+  }
+  .proto-btn {
+    background: transparent;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    font-size: 11px; padding: 3px 12px; border-radius: 20px;
+    cursor: pointer; font-family: inherit; transition: all .15s;
+  }
+  .proto-btn.active {
+    background: var(--brand-accent);
+    border-color: var(--brand-accent);
+    color: #fff;
+  }
+  .proto-btn:hover:not(.active) { background: #374151; }
+  .proto-sep {
+    color: #374151; font-size: 11px; margin: 0 2px;
+  }
+
+  /* ── LAYOUT AUTH ── */
+  .auth-wrapper {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 32px);
+  }
+
+  /* ── LADO ESQUERDO — BRANDING ── */
+  .auth-brand {
+    background: linear-gradient(145deg, #1a4d35 0%, #2d7a57 60%, #43a87a 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-brand::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+    top: -100px; right: -120px;
+  }
+  .auth-brand::after {
+    content: '';
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    bottom: 60px; left: -80px;
+  }
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-logo .paw {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,.18);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .brand-logo .name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .brand-content { z-index: 1; }
+  .brand-content h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .brand-content p {
+    font-size: 1rem;
+    color: rgba(255,255,255,.8);
+    line-height: 1.7;
+    max-width: 340px;
+  }
+  .brand-features {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 1;
+    margin-top: 48px;
+  }
+  .brand-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-feature .icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .brand-feature .text {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,.85);
+    font-weight: 500;
+  }
+  .brand-footer {
+    z-index: 1;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,.5);
+  }
+
+  /* ── LADO DIREITO — FORMULÁRIO ── */
+  .auth-form-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    background: var(--surface);
+    overflow-y: auto;
+  }
+  .auth-card {
+    width: 100%;
+    max-width: 420px;
+  }
+  .auth-card-header { margin-bottom: 32px; }
+  .auth-card-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1a4d35;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .auth-card-header p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  /* ── FORMULÁRIO ── */
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+  }
+  .form-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    color: #111827;
+    background: var(--white);
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+    font-family: inherit;
+  }
+  .form-input:focus {
+    border-color: #2d7a57;
+    box-shadow: 0 0 0 3px rgba(45,122,87,.12);
+  }
+  .form-input::placeholder { color: #9ca3af; }
+
+  .input-with-icon { position: relative; }
+  .input-with-icon .form-input { padding-left: 42px; }
+  .input-with-icon .input-icon {
+    position: absolute;
+    left: 13px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .input-with-icon .input-icon svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .input-with-icon .input-toggle {
+    position: absolute;
+    right: 13px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    cursor: pointer;
+    opacity: .45;
+    background: none; border: none;
+    padding: 2px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* ── BOTÕES ── */
+  .btn-primary {
+    width: 100%;
+    padding: 13px;
+    background: #2d7a57;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    font-family: inherit;
+    display: flex;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: #1a4d35; }
+  .btn-primary:active { transform: scale(.99); }
+
+  .btn-ghost {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: #2d7a57;
+    border: 1.5px solid #2d7a57;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+    margin-top: 10px;
+  }
+  .btn-ghost:hover { background: #e8f5ef; }
+
+  .btn-social {
+    width: 100%;
+    padding: 11px;
+    background: var(--white);
+    color: #374151;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center; justify-content: center;
+    gap: 10px;
+  }
+  .btn-social:hover { border-color: #d1d5db; background: #f9fafb; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: #9ca3af;
+    font-size: 0.8rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: #e5e7eb;
+  }
+
+  /* ── LINKS ── */
+  .form-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  .form-footer a {
+    color: #2d7a57;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .form-footer a:hover { text-decoration: underline; }
+
+  .forgot-link {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 14px;
+  }
+  .forgot-link a {
+    font-size: 0.8rem;
+    color: #2d7a57;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .forgot-link a:hover { text-decoration: underline; }
+
+  /* ── TERMS / BACK ── */
+  .terms {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .terms a { color: #2d7a57; text-decoration: none; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #6b7280;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: color .2s;
+  }
+  .back-link:hover { color: #2d7a57; }
+
+  /* ── SUCCESS / INFO BOX ── */
+  .success-box {
+    background: #e8f5ef;
+    border: 1.5px solid #b8dfc8;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .success-box .icon { font-size: 40px; margin-bottom: 12px; }
+  .success-box h3 { color: #1a4d35; font-size: 1.1rem; margin-bottom: 8px; }
+  .success-box p { font-size: 0.875rem; color: #4b7a5e; line-height: 1.6; }
+
+  /* ── PLANOS BADGE ── */
+  .plan-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,.9);
+    margin-bottom: 32px;
+  }
+
+  /* ── PASSWORD STRENGTH ── */
+  .password-strength {
+    margin-top: 6px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .strength-bar {
+    height: 3px; flex: 1;
+    border-radius: 2px;
+    background: #e5e7eb;
+  }
+  .strength-bar.filled-weak { background: #ef4444; }
+  .strength-bar.filled-medium { background: #f59e0b; }
+  .strength-bar.filled-strong { background: #2d7a57; }
+  .strength-label {
+    font-size: 0.72rem;
+    color: #6b7280;
+    margin-left: 4px;
+    min-width: 40px;
+  }
+
+  /* ── TELAS ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── CHECKBOX ── */
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 6px 0;
+  }
+  .checkbox-row input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: #2d7a57;
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .checkbox-row label {
+    font-size: 0.8rem;
+    color: #6b7280;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .checkbox-row label a {
+    color: #2d7a57;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  /* ── OTP — CÓDIGO 6 DÍGITOS ── */
+  .otp-wrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 28px 0 24px;
+  }
+  .otp-input {
+    width: 52px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    background: var(--white);
+    color: #1a4d35;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    font-family: 'Inter', monospace;
+  }
+  .otp-input:focus {
+    border-color: #2d7a57;
+    box-shadow: 0 0 0 3px rgba(45,122,87,.15);
+  }
+  .otp-input.filled {
+    border-color: #2d7a57;
+    background: #e8f5ef;
+  }
+
+  /* ── TIMER / RESEND ── */
+  .resend-row {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+  .resend-row .timer {
+    font-weight: 700;
+    color: #1a4d35;
+    font-variant-numeric: tabular-nums;
+  }
+  .resend-row a {
+    color: #2d7a57;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .resend-row a:hover { text-decoration: underline; }
+
+  /* ── STEP INDICATOR ── */
+  .step-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+  .step-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-dot.done {
+    background: #2d7a57;
+    color: #fff;
+  }
+  .step-dot.active {
+    background: #1a4d35;
+    color: #fff;
+    box-shadow: 0 0 0 3px rgba(45,122,87,.2);
+  }
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: #e5e7eb;
+  }
+  .step-line.done { background: #2d7a57; }
+
+  .step-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    margin-bottom: 24px;
+  }
+  .step-label-item {
+    font-size: 0.68rem;
+    color: #9ca3af;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+  }
+  .step-label-item.active { color: #1a4d35; font-weight: 600; }
+  .step-label-item.done { color: #2d7a57; }
+
+  /* ── EMAIL BADGE (MFA) ── */
+  .email-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ef;
+    border: 1px solid #b8dfc8;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1a4d35;
+    margin-bottom: 4px;
+  }
+
+  /* ── HINT BOX ── */
+  .hint-box {
+    background: #fffde7;
+    border: 1px solid #f9e04b;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.82rem;
+    color: #6b4c00;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- BARRA DO PROTÓTIPO -->
+<div class="proto-nav">
+  <span>🎨 Protótipo EP-00</span>
+  <button class="proto-btn active" onclick="showScreen('login')">1. Login</button>
+  <button class="proto-btn" onclick="showScreen('register')">2. Cadastro</button>
+  <span class="proto-sep">|</span>
+  <button class="proto-btn" onclick="showScreen('mfa-login')">3. Código MFA (login)</button>
+  <button class="proto-btn" onclick="showScreen('mfa-register')">4. Código MFA (cadastro)</button>
+  <span class="proto-sep">|</span>
+  <button class="proto-btn" onclick="showScreen('recovery')">5. Recuperar Senha</button>
+  <button class="proto-btn" onclick="showScreen('mfa-recovery')">6. Código MFA (recuperação)</button>
+  <button class="proto-btn" onclick="showScreen('new-password')">7. Criar Nova Senha</button>
+</div>
+
+<div class="auth-wrapper">
+
+  <!-- ── LADO ESQUERDO — BRANDING ── -->
+  <div class="auth-brand">
+    <div class="brand-logo">
+      <div class="paw">
+        <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 2C9 2 3 5.5 3 10.5C3 13.538 5.686 16 9 16C12.314 16 15 13.538 15 10.5C15 5.5 9 2 9 2Z" fill="white" opacity=".92"/>
+          <path d="M6.5 11C6.5 11 7.5 13 9 13C10.5 13 11.5 11 11.5 11" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="name">PetPulse</div>
+    </div>
+    <div class="brand-content">
+      <div class="plan-badge">✨ Grátis para começar</div>
+      <h2>Toda a saúde do seu pet em um só lugar</h2>
+      <p>Prontuários digitais, vacinas, agendamentos e monitoramento de saúde e tudo organizado para você e seu pet.</p>
+      <div class="brand-features">
+        <div class="brand-feature">
+          <div class="icon">📋</div>
+          <div class="text">Prontuário SOAP digital completo</div>
+        </div>
+        <div class="brand-feature">
+          <div class="icon">💉</div>
+          <div class="text">Carteira de vacinação sempre atualizada</div>
+        </div>
+        <div class="brand-feature">
+          <div class="icon">📅</div>
+          <div class="text">Agenda de consultas e lembretes automáticos</div>
+        </div>
+        <div class="brand-feature">
+          <div class="icon">📊</div>
+          <div class="text">Monitoramento de saúde e bem-estar</div>
+        </div>
+      </div>
+    </div>
+    <div class="brand-footer">© 2026 PetPulse · Vital Biometry. Todos os direitos reservados.</div>
+  </div>
+
+  <!-- ── LADO DIREITO ── -->
+  <div class="auth-form-area">
+    <div class="auth-card">
+
+      <!-- ══════════════════════════════════════════════
+           TELA 1: LOGIN
+      ══════════════════════════════════════════════ -->
+      <div class="screen active" id="screen-login">
+        <div class="auth-card-header">
+          <h1>Bem-vindo de volta</h1>
+          <p>Entre na sua conta para acessar a saúde do seu pet.</p>
+        </div>
+
+        <button class="btn-social">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 01-7.18-2.54H1.83v2.07A8 8 0 008.98 17z" fill="#34A853"/><path d="M4.5 10.52a4.8 4.8 0 010-3.04V5.41H1.83a8 8 0 000 7.18l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 001.83 5.4L4.5 7.49a4.77 4.77 0 014.48-3.3z" fill="#EA4335"/></svg>
+          Continuar com Google
+        </button>
+
+        <div class="divider">ou entre com e-mail</div>
+
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></span>
+            <input type="email" class="form-input" placeholder="seu@email.com" value="tide@exemplo.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
+            <input type="password" class="form-input" placeholder="••••••••" value="••••••••">
+            <button class="input-toggle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <div class="forgot-link">
+          <a onclick="showScreen('recovery')">Esqueci minha senha</a>
+        </div>
+
+        <button class="btn-primary" onclick="showScreen('mfa-login')">
+          Entrar na minha conta →
+        </button>
+        <div class="form-footer">
+          Não tem conta? <a onclick="showScreen('register')">Cadastre-se grátis</a>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════
+           TELA 2: CADASTRO
+      ══════════════════════════════════════════════ -->
+      <div class="screen" id="screen-register">
+        <div class="auth-card-header">
+          <h1>Criar conta grátis</h1>
+          <p>Cadastre-se e comece a cuidar da saúde do seu pet agora mesmo.</p>
+        </div>
+
+        <button class="btn-social">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 01-7.18-2.54H1.83v2.07A8 8 0 008.98 17z" fill="#34A853"/><path d="M4.5 10.52a4.8 4.8 0 010-3.04V5.41H1.83a8 8 0 000 7.18l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 001.83 5.4L4.5 7.49a4.77 4.77 0 014.48-3.3z" fill="#EA4335"/></svg>
+          Cadastrar com Google
+        </button>
+
+        <div class="divider">ou preencha o formulário</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nome</label>
+            <input type="text" class="form-input" placeholder="Tide" value="Tide">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sobrenome</label>
+            <input type="text" class="form-input" placeholder="Cardoso" value="Cardoso">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></span>
+            <input type="email" class="form-input" placeholder="seu@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefone <span style="color:#9ca3af;font-weight:400">(opcional)</span></label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg></span>
+            <input type="tel" class="form-input" placeholder="(11) 9 0000-0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
+            <input type="password" class="form-input" placeholder="Mínimo 8 caracteres" value="Senha123!">
+            <button class="input-toggle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div class="password-strength">
+            <div class="strength-bar filled-strong"></div>
+            <div class="strength-bar filled-strong"></div>
+            <div class="strength-bar filled-strong"></div>
+            <div class="strength-bar"></div>
+            <span class="strength-label">Forte</span>
+          </div>
+        </div>
+        <div class="checkbox-row" style="margin-bottom:8px">
+          <input type="checkbox" id="terms" checked>
+          <label for="terms">Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a></label>
+        </div>
+        <div class="checkbox-row" style="margin-bottom:16px">
+          <input type="checkbox" id="newsletter">
+          <label for="newsletter">Quero receber dicas de saúde pet e novidades do PetPulse</label>
+        </div>
+
+        <button class="btn-primary" onclick="showScreen('mfa-register')">
+          Criar minha conta →
+        </button>
+        <div class="form-footer">
+          Já tem conta? <a onclick="showScreen('login')">Entrar</a>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════
+           TELA 3: CÓDIGO MFA — LOGIN
+      ══════════════════════════════════════════════ -->
+      <div class="screen" id="screen-mfa-login">
+        <div class="back-link" onclick="showScreen('login')">← Voltar para o login</div>
+
+        <div class="auth-card-header">
+          <h1>Verificação de segurança</h1>
+          <p>Enviamos um código de 6 dígitos para confirmar sua identidade.</p>
+        </div>
+
+        <div style="text-align:center;margin-bottom:8px">
+          <div class="email-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> tide@exemplo.com</div>
+        </div>
+
+        <div class="hint-box">
+          Verifique sua caixa de entrada — o código expira em <strong>10 minutos</strong>.
+        </div>
+
+        <div class="otp-wrapper">
+          <input type="text" class="otp-input filled" maxlength="1" value="4">
+          <input type="text" class="otp-input filled" maxlength="1" value="8">
+          <input type="text" class="otp-input filled" maxlength="1" value="3">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·" id="otp4-login">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+        </div>
+
+        <button class="btn-primary">
+          Verificar código →
+        </button>
+
+        <div class="resend-row" style="margin-top:20px">
+          Não recebeu? Reenviar em <span class="timer" id="timer-login">01:47</span>
+          &nbsp;·&nbsp; <a>Reenviar agora</a>
+        </div>
+
+        <div class="terms" style="margin-top:16px">
+          Problemas com o código? Entre em contato com o <a href="#">suporte</a>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════
+           TELA 4: CÓDIGO MFA — CADASTRO
+      ══════════════════════════════════════════════ -->
+      <div class="screen" id="screen-mfa-register">
+        <!-- Steps -->
+        <div class="step-indicator">
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot active">2</div>
+          <div class="step-line"></div>
+          <div class="step-dot">3</div>
+        </div>
+        <div class="step-labels">
+          <div class="step-label-item done">Dados</div>
+          <div class="step-label-item active">Verificação</div>
+          <div class="step-label-item">Pronto!</div>
+        </div>
+
+        <div class="auth-card-header">
+          <h1>Confirme seu e-mail</h1>
+          <p>Enviamos um código de 6 dígitos para ativar sua conta.</p>
+        </div>
+
+        <div style="text-align:center;margin-bottom:8px">
+          <div class="email-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> tide@exemplo.com</div>
+        </div>
+
+        <div class="hint-box">
+          Verifique sua caixa de entrada — o código expira em <strong>10 minutos</strong>.
+        </div>
+
+        <div class="otp-wrapper">
+          <input type="text" class="otp-input filled" maxlength="1" value="7">
+          <input type="text" class="otp-input filled" maxlength="1" value="2">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+        </div>
+
+        <button class="btn-primary">
+          Confirmar e ativar conta →
+        </button>
+
+        <div class="resend-row" style="margin-top:20px">
+          Não recebeu? Reenviar em <span class="timer">02:30</span>
+          &nbsp;·&nbsp; <a>Reenviar agora</a>
+        </div>
+
+        <div class="form-footer">
+          E-mail errado? <a onclick="showScreen('register')">Voltar ao cadastro</a>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════
+           TELA 5: RECUPERAR SENHA
+      ══════════════════════════════════════════════ -->
+      <div class="screen" id="screen-recovery">
+        <div class="back-link" onclick="showScreen('login')">← Voltar para o login</div>
+
+        <!-- Steps -->
+        <div class="step-indicator">
+          <div class="step-dot active">1</div>
+          <div class="step-line"></div>
+          <div class="step-dot">2</div>
+          <div class="step-line"></div>
+          <div class="step-dot">3</div>
+        </div>
+        <div class="step-labels">
+          <div class="step-label-item active">Seu e-mail</div>
+          <div class="step-label-item">Código</div>
+          <div class="step-label-item">Nova senha</div>
+        </div>
+
+        <div class="auth-card-header">
+          <h1>Recuperar senha</h1>
+          <p>Digite seu e-mail cadastrado e enviaremos um código de verificação.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">E-mail cadastrado</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></span>
+            <input type="email" class="form-input" placeholder="seu@email.com" value="tide@exemplo.com">
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="showScreen('mfa-recovery')">
+          Enviar código de verificação →
+        </button>
+        <button class="btn-ghost" onclick="showScreen('login')">Cancelar</button>
+      </div>
+
+      <!-- ══════════════════════════════════════════════
+           TELA 6: CÓDIGO MFA — RECUPERAÇÃO
+      ══════════════════════════════════════════════ -->
+      <div class="screen" id="screen-mfa-recovery">
+        <div class="back-link" onclick="showScreen('recovery')">← Voltar</div>
+
+        <!-- Steps -->
+        <div class="step-indicator">
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot active">2</div>
+          <div class="step-line"></div>
+          <div class="step-dot">3</div>
+        </div>
+        <div class="step-labels">
+          <div class="step-label-item done">Seu e-mail</div>
+          <div class="step-label-item active">Código</div>
+          <div class="step-label-item">Nova senha</div>
+        </div>
+
+        <div class="auth-card-header">
+          <h1>Digite o código</h1>
+          <p>Insira o código de 6 dígitos que enviamos para o seu e-mail.</p>
+        </div>
+
+        <div style="text-align:center;margin-bottom:8px">
+          <div class="email-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg> tide@exemplo.com</div>
+        </div>
+
+        <div class="hint-box">
+          Verifique sua caixa de entrada e spam — o código expira em <strong>10 minutos</strong>.
+        </div>
+
+        <div class="otp-wrapper">
+          <input type="text" class="otp-input filled" maxlength="1" value="9">
+          <input type="text" class="otp-input filled" maxlength="1" value="1">
+          <input type="text" class="otp-input filled" maxlength="1" value="5">
+          <input type="text" class="otp-input filled" maxlength="1" value="3">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+          <input type="text" class="otp-input" maxlength="1" placeholder="·">
+        </div>
+
+        <button class="btn-primary" onclick="showScreen('new-password')">
+          Confirmar código →
+        </button>
+
+        <div class="resend-row" style="margin-top:20px">
+          Não recebeu? Reenviar em <span class="timer">01:12</span>
+          &nbsp;·&nbsp; <a>Reenviar agora</a>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════
+           TELA 7: CRIAR NOVA SENHA
+      ══════════════════════════════════════════════ -->
+      <div class="screen" id="screen-new-password">
+        <!-- Steps -->
+        <div class="step-indicator">
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot done">✓</div>
+          <div class="step-line done"></div>
+          <div class="step-dot active">3</div>
+        </div>
+        <div class="step-labels">
+          <div class="step-label-item done">Seu e-mail</div>
+          <div class="step-label-item done">Código</div>
+          <div class="step-label-item active">Nova senha</div>
+        </div>
+
+        <div class="auth-card-header">
+          <h1>Criar nova senha</h1>
+          <p>Escolha uma senha forte para proteger sua conta.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nova senha</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
+            <input type="password" class="form-input" placeholder="Mínimo 8 caracteres" value="NovaSenha@123">
+            <button class="input-toggle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div class="password-strength">
+            <div class="strength-bar filled-strong"></div>
+            <div class="strength-bar filled-strong"></div>
+            <div class="strength-bar filled-strong"></div>
+            <div class="strength-bar filled-strong"></div>
+            <span class="strength-label" style="color:#2d7a57;font-weight:600;">Muito forte</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirmar nova senha</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
+            <input type="password" class="form-input" placeholder="Repita a senha" value="NovaSenha@123">
+            <button class="input-toggle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+            <span style="font-size:14px">✅</span>
+            <span style="font-size:0.78rem;color:#2d7a57;font-weight:500">As senhas coincidem</span>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:14px;margin-bottom:18px">
+          <div style="font-size:0.78rem;font-weight:600;color:#374151;margin-bottom:8px">Requisitos da senha:</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="font-size:0.78rem;color:#2d7a57;display:flex;gap:6px;align-items:center">✅ Mínimo 8 caracteres</div>
+            <div style="font-size:0.78rem;color:#2d7a57;display:flex;gap:6px;align-items:center">✅ Pelo menos uma letra maiúscula</div>
+            <div style="font-size:0.78rem;color:#2d7a57;display:flex;gap:6px;align-items:center">✅ Pelo menos um número</div>
+            <div style="font-size:0.78rem;color:#2d7a57;display:flex;gap:6px;align-items:center">✅ Pelo menos um caractere especial</div>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="showScreen('login')">
+          Salvar nova senha →
+        </button>
+
+        <div class="terms" style="margin-top:16px">
+          Após salvar, você será redirecionado para o login.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const screenMap = {
+    'login': 0,
+    'register': 1,
+    'mfa-login': 2,
+    'mfa-register': 3,
+    'recovery': 4,
+    'mfa-recovery': 5,
+    'new-password': 6
+  };
+
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.proto-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    const idx = screenMap[name];
+    if (idx !== undefined) {
+      document.querySelectorAll('.proto-btn')[idx].classList.add('active');
+    }
+    // scroll form area to top
+    document.querySelector('.auth-form-area').scrollTop = 0;
+  }
+
+  // OTP auto-advance
+  document.querySelectorAll('.otp-input').forEach((input, i, all) => {
+    input.addEventListener('input', () => {
+      if (input.value.length === 1 && i < all.length - 1) {
+        all[i + 1].focus();
+      }
+      if (input.value) input.classList.add('filled');
+      else input.classList.remove('filled');
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !input.value && i > 0) {
+        all[i - 1].focus();
+      }
+    });
+  });
+</script>
+</body>
+</html>
