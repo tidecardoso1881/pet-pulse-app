@@ -15,10 +15,10 @@ interface StatCardsProps {
 }
 
 const CARDS = [
-  { label: "Próxima Consulta",    value: "—",    sub: "Não agendada",       subClass: "" },
-  { label: "Vacinas Pendentes",   value: "0",    sub: "✓ Atualizadas",       subClass: "text-[#2d7a57] font-semibold" },
-  { label: "Medicamentos Ativos", value: "2",    sub: "Monitoramento ativo", subClass: "" },
-  { label: "Peso do Pet",         value: "— kg", sub: "Não registrado",      subClass: "" },
+  { label: "PRÓXIMA CONSULTA",    value: "—",    sub: "Não agendada",       subClass: "",                              valueColor: "#111827" },
+  { label: "VACINAS PENDENTES",   value: "0",    sub: "✓ Atualizadas",      subClass: "text-[#2d7a57] font-semibold",  valueColor: "#1a4d35" },
+  { label: "MEDICAMENTOS ATIVOS", value: "2",    sub: "Monitoramento ativo", subClass: "",                             valueColor: "#111827" },
+  { label: "PESO DO PET",         value: "— kg", sub: "Não registrado",      subClass: "",                             valueColor: "#111827" },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,7 +36,7 @@ export function StatCards({ pet }: StatCardsProps) {
           </span>
           <span
             className="text-[1.375rem] font-extrabold leading-tight tracking-tight"
-            style={{ color: card.label === "Vacinas Pendentes" ? "#1a4d35" : "#111827" }}
+            style={{ color: card.valueColor }}
           >
             {card.value}
           </span>
@@ -44,12 +44,11 @@ export function StatCards({ pet }: StatCardsProps) {
             {card.sub}
           </span>
           <button
-            className="absolute top-3 right-3 flex items-center justify-center rounded-[6px] transition-all"
+            className="absolute top-3 right-3 flex items-center justify-center rounded-[6px] transition-all hover:bg-[#e8f5ef]"
             style={{ width: 22, height: 22 }}
-            onClick={() => {}}
             title="Editar"
           >
-            <PenLine size={11} className="text-gray-300" />
+            <PenLine size={11} className="text-gray-300 hover:text-[#2d7a57]" />
           </button>
         </div>
       ))}
