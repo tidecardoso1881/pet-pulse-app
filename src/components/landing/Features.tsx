@@ -68,13 +68,13 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="bg-[#FAF9F7] py-24 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section className="bg-[#FAF9F7] py-20 px-4">
+      <div className="max-w-7xl mx-auto px-2">
         {/* Section label */}
         <p className="text-xs font-semibold text-[#2d7a57] uppercase tracking-widest mb-3">
           Funcionalidades
         </p>
-        <h2 className="text-3xl md:text-4xl font-bold text-[#1a4d35] mb-14">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#1a4d35] mb-10">
           Tudo que seu pet precisa, ao alcance da mão
         </h2>
 
@@ -84,7 +84,7 @@ export default function Features() {
               key={feature.title}
               className="bg-white border border-gray-100 rounded-xl p-6 hover:-translate-y-1 hover:shadow-md transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#edf7f1] flex items-center justify-center text-[#2d7a57] mb-5">
+              <div className="w-12 h-12 rounded-xl bg-[#d4ede1] flex items-center justify-center text-[#1a4d35] mb-4">
                 {feature.icon}
               </div>
               <h3 className="text-base font-semibold text-[#1a4d35] mb-2">

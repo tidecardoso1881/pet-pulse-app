@@ -68,14 +68,14 @@ function AnimatedBars() {
 
 export default function WhyPetPulse() {
   return (
-    <section className="bg-white py-24 px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <section className="bg-white py-20 px-4">
+      <div className="max-w-7xl mx-auto px-2 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left */}
         <div>
           <p className="text-xs font-semibold text-[#2d7a57] uppercase tracking-widest mb-3">
             Por que PetPulse?
           </p>
-          <h2 className="text-[1.75rem] md:text-[2.25rem] font-bold text-[#1a4d35] leading-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1a4d35] leading-tight mb-4">
             Cuidado preventivo, saúde preditiva
           </h2>
           <p className="text-gray-500 mb-8 leading-relaxed">

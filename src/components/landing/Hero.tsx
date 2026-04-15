@@ -6,8 +6,8 @@ export default function Hero() {
     <section className="bg-white pt-20 pb-14 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Badge */}
-        <div className="flex items-center gap-2 mb-6">
-          <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden>
+        <div className="flex items-center gap-1.5 mb-5">
+          <svg width="16" height="10" viewBox="0 0 22 14" fill="none" aria-hidden>
             <polyline
               points="0,7 4,7 6.5,1 9.5,13 12,7 16,7 17.5,4.5 19,7 22,7"
               stroke="#2d7a57"
@@ -17,7 +17,7 @@ export default function Hero() {
               fill="none"
             />
           </svg>
-          <span className="text-xs font-semibold text-[#2d7a57] tracking-wide">
+          <span className="text-[11px] font-semibold text-[#2d7a57] tracking-widest uppercase">
             Plataforma de Saúde Pet
           </span>
         </div>

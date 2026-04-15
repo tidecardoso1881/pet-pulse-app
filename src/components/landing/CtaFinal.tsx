@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CtaFinal() {
   return (
-    <section className="bg-white py-24 px-6">
+    <section className="bg-white py-20 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1a4d35] mb-4">
           Pronto para cuidar melhor?
