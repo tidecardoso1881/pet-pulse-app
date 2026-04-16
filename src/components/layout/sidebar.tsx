@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutGrid,
   PawPrint,
-  FileText,
+  ClipboardList,
   Calendar,
   Syringe,
   Folder,
@@ -33,7 +33,7 @@ export interface SidebarItem {
 const NAV_ITEMS: SidebarItem[] = [
   { label: "Painel Principal",      href: "/dashboard",         icon: <LayoutGrid size={17} /> },
   { label: "Meus Pets",             href: "/pets",              icon: <PawPrint size={17} /> },
-  { label: "Prontuário Digital",    href: "/medical-records",   icon: <FileText size={17} /> },
+  { label: "Prontuário Digital",    href: "/medical-records",   icon: <ClipboardList size={17} /> },
   { label: "Agenda de Cuidados",    href: "/appointments",      icon: <Calendar size={17} /> },
   { label: "Vacinas",               href: "/vaccines",          icon: <Syringe size={17} /> },
   { label: "Repositório de Exames", href: "/exams",             icon: <Folder size={17} /> },
