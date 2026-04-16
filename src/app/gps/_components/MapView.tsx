@@ -9,8 +9,8 @@ interface MapViewProps {
   petName: string;
 }
 
-// Default center: São Paulo, Brazil
-const DEFAULT_CENTER = { lng: -46.6333, lat: -23.5505 };
+// Default center: São Paulo, Brazil (CEP 03508-000)
+const DEFAULT_CENTER = { lng: -46.5076, lat: -23.5371 };
 const DEFAULT_ZOOM = 14;
 
 export function MapView({ location, zone, petName }: MapViewProps) {
