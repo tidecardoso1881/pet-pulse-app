@@ -40,7 +40,7 @@ export default function HeroClinic() {
             Quero conhecer a plataforma →
           </Link>
           <Link
-            href="#"
+            href="/clinic-demo"
             className="inline-flex items-center px-6 py-3 text-sm font-semibold text-[#1a4d35] border border-[#2d7a57] rounded-lg hover:bg-white transition-colors"
           >
             Ver demonstração
