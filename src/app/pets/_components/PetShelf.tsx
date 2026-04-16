@@ -35,6 +35,18 @@ const GENDER_FROM_DB: Record<string, string> = {
   female: "Fêmea",
 };
 
+// DB constraint: species IN ('dog', 'cat', 'other')
+// UI label:      'Cão' / 'Gato'
+const SPECIES_TO_DB: Record<string, string> = {
+  Cão: "dog",
+  Gato: "cat",
+};
+const SPECIES_FROM_DB: Record<string, string> = {
+  dog: "Cão",
+  cat: "Gato",
+  other: "Outro",
+};
+
 const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
   padding: "10px 14px",
@@ -68,7 +80,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
     if (mode === "edit" && pet) {
       setForm({
         name: pet.name,
-        species: pet.species,
+        species: SPECIES_FROM_DB[pet.species ?? ""] ?? pet.species,
         gender: GENDER_FROM_DB[pet.gender ?? ""] ?? "Macho",
         breed: pet.breed ?? "",
         birth_date: pet.birth_date ?? "",
@@ -107,6 +119,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
     setSubmitError(null);
     const supabase = createClient();
     const genderDb = GENDER_TO_DB[form.gender] ?? form.gender;
+    const speciesDb = SPECIES_TO_DB[form.species] ?? form.species;
 
     try {
       if (mode === "add") {
@@ -115,7 +128,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
           .insert({
             owner_id: userId,
             name: form.name.trim(),
-            species: form.species,
+            species: speciesDb,
             gender: genderDb,
             breed: form.breed.trim() || null,
             birth_date: form.birth_date || null,
@@ -133,7 +146,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
         if (photoFile) photoUrl = await uploadPhoto(pet.id);
         const { error } = await supabase.from("pets").update({
           name: form.name.trim(),
-          species: form.species,
+          species: speciesDb,
           gender: genderDb,
           breed: form.breed.trim() || null,
           birth_date: form.birth_date || null,
