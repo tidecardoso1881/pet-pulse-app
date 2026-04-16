@@ -45,7 +45,7 @@ export default function CadastroPage() {
     });
     setLoading(false);
     if (error) { setError("Não foi possível criar sua conta. Verifique os dados e tente novamente."); return; }
-    router.push(`/verificar?tipo=cadastro&email=${encodeURIComponent(email)}`);
+    router.push("/dashboard");
   }
 
   async function handleGoogle() {
