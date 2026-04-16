@@ -32,7 +32,7 @@ export function EmptyPetState() {
         do seu companheiro organizada.
       </p>
       <button
-        onClick={() => router.push("/pets?action=new")}
+        onClick={() => router.push("/pets/novo")}
         className="text-white transition-colors"
         style={{
           fontSize: "13.5px",

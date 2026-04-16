@@ -62,14 +62,7 @@ export function StatCards({ pet }: StatCardsProps) {
             {card.value}
           </span>
           {card.sub && (
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: 500,
-                color: card.subColor,
-                marginTop: 4,
-              }}
-            >
+            <span style={{ fontSize: "11.5px", color: card.subColor, marginTop: 4 }}>
               {card.sub}
             </span>
           )}

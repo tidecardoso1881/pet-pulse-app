@@ -1,0 +1,20 @@
+export default function Footer() {
+  return (
+    <footer className="bg-white border-t border-gray-100 py-6 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden>
+            <circle cx="14" cy="14" r="14" fill="#2d7a57" />
+            <path d="M14 20.5C14 20.5 7 16 7 10.8C7 8.7 8.7 7 10.8 7C12.1 7 13.2 7.7 14 8.8C14.8 7.7 15.9 7 17.2 7C19.3 7 21 8.7 21 10.8C21 16 14 20.5 14 20.5Z" fill="white"/>
+          </svg>
+          <span className="text-base font-bold text-[#1a4d35]">PetPulse</span>
+        </div>
+
+        <p className="text-xs text-gray-400 text-center">
+          &copy; 2026 PetPulse &middot; Sinergia Soft Tecnologia e Inovação. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+  );
+}
