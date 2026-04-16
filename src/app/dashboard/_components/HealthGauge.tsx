@@ -95,6 +95,16 @@ export function HealthGauge({ score }: HealthGaugeProps) {
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes gaugeGrow {
+          from { stroke-dasharray: 0 ${circ}; }
+          to   { stroke-dasharray: ${fill} ${circ}; }
+        }
+        @keyframes barGrow {
+          from { width: 0%; }
+        }
+      `}</style>
     </div>
   );
 }
