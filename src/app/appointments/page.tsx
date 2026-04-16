@@ -1,24 +1,24 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
-import { MedicalRecordsClient } from "./_components/MedicalRecordsClient";
+import { AppointmentsClient } from "./_components/AppointmentsClient";
 
-export const metadata = { title: "Prontuário Digital — PetPulse" };
+export const metadata = { title: "Agenda de Cuidados — PetPulse" };
 
-export default async function MedicalRecordsPage() {
+export default async function AppointmentsPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: records }, { data: pets }] = await Promise.all([
+  const [{ data: appointments }, { data: pets }] = await Promise.all([
     supabase
-      .from("medical_records")
-      .select("*, pets(name, photo_url)")
+      .from("appointments")
+      .select("*, pets(name, photo_url, species)")
       .eq("owner_id", user.id)
-      .order("date", { ascending: false }),
+      .order("date", { ascending: true }),
     supabase
       .from("pets")
-      .select("id, name, photo_url, allergies")
+      .select("id, name, species, photo_url")
       .eq("owner_id", user.id)
       .order("name"),
   ]);
@@ -39,8 +39,8 @@ export default async function MedicalRecordsPage() {
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
       notificationCount={4}
     >
-      <MedicalRecordsClient
-        records={records ?? []}
+      <AppointmentsClient
+        initialAppointments={appointments ?? []}
         pets={pets ?? []}
         userId={user.id}
       />
