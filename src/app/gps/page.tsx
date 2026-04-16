@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { GpsClient } from "./_components/GpsClient";
 import { getUnreadNotificationCount } from "@/lib/utils/notifications";
+import type { Plan } from "@/types/plans";
 
 export const metadata = { title: "Localização GPS — PetPulse" };
 
@@ -11,7 +12,7 @@ export default async function GpsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: pets }, { data: locations }, { data: safeZones }, unreadCount] =
+  const [{ data: pets }, { data: locations }, { data: safeZones }, { data: profile }, unreadCount] =
     await Promise.all([
       supabase
         .from("pets")
@@ -29,8 +30,11 @@ export default async function GpsPage() {
         .select("*")
         .eq("owner_id", user.id)
         .eq("is_active", true),
+      supabase.from("profiles").select("plan").eq("id", user.id).single(),
       getUnreadNotificationCount(supabase, user.id),
     ]);
+
+  const userPlan: Plan = profile?.plan === "pro" ? "pro" : "free";
 
   const fullName: string =
     user.user_metadata?.full_name ?? user.email?.split("@")[0] ?? "Tutor";
@@ -53,6 +57,7 @@ export default async function GpsPage() {
         locations={locations ?? []}
         safeZones={safeZones ?? []}
         userId={user.id}
+        plan={userPlan}
       />
     </AppShell>
   );

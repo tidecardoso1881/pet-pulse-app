@@ -204,7 +204,7 @@ export function Sidebar({
             Sair
           </button>
           <Link
-            href="/settings/billing"
+            href="/plans"
             className="group flex items-center gap-[10px] rounded-[10px] mx-[10px] my-3 px-3 py-[10px] bg-[#e8f5ef] border border-[#b8dfc8] hover:bg-[#EAF6F0] transition-colors"
           >
             <span

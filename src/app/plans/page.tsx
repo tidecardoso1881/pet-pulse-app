@@ -1,25 +1,20 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
-import { PetsClient } from "./_components/PetsClient";
+import { PlansClient } from "./_components/PlansClient";
 import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 import type { Plan } from "@/types/plans";
 
-export const metadata = { title: "Meus Pets — PetPulse" };
+export const metadata = { title: "Planos — PetPulse" };
 
-export default async function PetsPage() {
+export default async function PlansPage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
 
-  if (!user) return null;
-
-  const [{ data: pets }, { data: profile }, unreadCount] = await Promise.all([
-    supabase
-      .from("pets")
-      .select("id, owner_id, name, species, gender, breed, birth_date, weight_kg, photo_url")
-      .eq("owner_id", user.id)
-      .order("created_at", { ascending: true }),
+  const [{ data: profile }, unreadCount] = await Promise.all([
     supabase.from("profiles").select("plan").eq("id", user.id).single(),
     getUnreadNotificationCount(supabase, user.id),
   ]);
@@ -39,14 +34,10 @@ export default async function PetsPage() {
 
   return (
     <AppShell
-      user={{
-        name: fullName,
-        initials,
-        avatarUrl: user.user_metadata?.avatar_url,
-      }}
+      user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
       notificationCount={unreadCount}
     >
-      <PetsClient pets={pets ?? []} userId={user.id} plan={userPlan} />
+      <PlansClient userPlan={userPlan} />
     </AppShell>
   );
 }
