@@ -16,6 +16,7 @@ import {
   ShoppingBag,
   Bell,
   Settings,
+  Users,
   CreditCard,
   X,
   LogOut,
@@ -42,6 +43,7 @@ const NAV_ITEMS: SidebarItem[] = [
   { label: "Rotina e Alimentação",  href: "/routine",           icon: <Utensils size={17} /> },
   { label: "Marketplace",           href: "/marketplace",       icon: <ShoppingBag size={17} /> },
   { label: "Notificações",          href: "/notifications",     icon: <Bell size={17} />, badge: 4 },
+  { label: "Gestão de Usuários",     href: "/settings/users",    icon: <Users size={17} /> },
   { label: "Configurações",         href: "/settings",          icon: <Settings size={17} /> },
 ];
 
