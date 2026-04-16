@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { VaccinesClient } from "./_components/VaccinesClient";
 import { calcVaccineStatus } from "@/types/vaccines";
+import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
 export const metadata = { title: "Vacinas — PetPulse" };
 
@@ -11,7 +12,7 @@ export default async function VaccinesPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: vaccines }, { data: pets }] = await Promise.all([
+  const [{ data: vaccines }, { data: pets }, unreadCount] = await Promise.all([
     supabase
       .from("vaccines")
       .select("*, pets(name, photo_url)")
@@ -22,6 +23,7 @@ export default async function VaccinesPage() {
       .select("id, name, photo_url")
       .eq("owner_id", user.id)
       .order("name"),
+    getUnreadNotificationCount(supabase, user.id),
   ]);
 
   const vaccinesWithStatus = (vaccines ?? []).map((v) => ({
@@ -43,7 +45,7 @@ export default async function VaccinesPage() {
   return (
     <AppShell
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
-      notificationCount={4}
+      notificationCount={unreadCount}
     >
       <VaccinesClient
         vaccinesWithStatus={vaccinesWithStatus}

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { GpsClient } from "./_components/GpsClient";
+import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
 export const metadata = { title: "Localização GPS — PetPulse" };
 
@@ -10,7 +11,7 @@ export default async function GpsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: pets }, { data: locations }, { data: safeZones }] =
+  const [{ data: pets }, { data: locations }, { data: safeZones }, unreadCount] =
     await Promise.all([
       supabase
         .from("pets")
@@ -28,6 +29,7 @@ export default async function GpsPage() {
         .select("*")
         .eq("owner_id", user.id)
         .eq("is_active", true),
+      getUnreadNotificationCount(supabase, user.id),
     ]);
 
   const fullName: string =
@@ -44,7 +46,7 @@ export default async function GpsPage() {
   return (
     <AppShell
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
-      notificationCount={4}
+      notificationCount={unreadCount}
     >
       <GpsClient
         pets={pets ?? []}

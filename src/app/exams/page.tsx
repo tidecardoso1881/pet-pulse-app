@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { ExamsClient } from "./_components/ExamsClient";
+import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
 export const metadata = { title: "Repositório de Exames — PetPulse" };
 
@@ -12,7 +13,7 @@ export default async function ExamsPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: exams }, { data: pets }] = await Promise.all([
+  const [{ data: exams }, { data: pets }, unreadCount] = await Promise.all([
     supabase
       .from("exams")
       .select("*, pets(name, photo_url)")
@@ -23,6 +24,7 @@ export default async function ExamsPage() {
       .select("id, name, photo_url")
       .eq("owner_id", user.id)
       .order("name"),
+    getUnreadNotificationCount(supabase, user.id),
   ]);
 
   const fullName: string =
@@ -39,7 +41,7 @@ export default async function ExamsPage() {
   return (
     <AppShell
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
-      notificationCount={4}
+      notificationCount={unreadCount}
     >
       <ExamsClient
         initialExams={exams ?? []}
