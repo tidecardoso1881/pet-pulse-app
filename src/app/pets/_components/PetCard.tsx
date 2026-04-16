@@ -19,6 +19,12 @@ const GENDER_DISPLAY: Record<string, string> = {
   female: "Fêmea",
 };
 
+const SPECIES_DISPLAY: Record<string, string> = {
+  dog: "Cão",
+  cat: "Gato",
+  other: "Outro",
+};
+
 interface PetCardProps {
   pet: Pet;
   onEdit: (pet: Pet) => void;
@@ -39,7 +45,7 @@ function calcAge(birthDate: string | null): string {
 const HEALTH_SCORE = 85;
 
 export function PetCard({ pet, onEdit }: PetCardProps) {
-  const isCat = pet.species === "Gato";
+  const isCat = pet.species === "cat" || pet.species === "Gato";
   const avatarBg = isCat ? "#fef3c7" : "#e8f5ef";
   const avatarBorder = isCat ? "#fde68a" : "#d4ead8";
   const healthColor = HEALTH_SCORE >= 80 ? "#2d7a57" : "#f97316";
@@ -103,7 +109,7 @@ export function PetCard({ pet, onEdit }: PetCardProps) {
                 color: "#4b5563",
               }}
             >
-              {pet.species}{pet.gender ? ` · ${GENDER_DISPLAY[pet.gender] ?? pet.gender}` : ""}
+              {SPECIES_DISPLAY[pet.species] ?? pet.species}{pet.gender ? ` · ${GENDER_DISPLAY[pet.gender] ?? pet.gender}` : ""}
             </span>
           </div>
           {pet.breed && (

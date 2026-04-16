@@ -18,7 +18,9 @@ import {
   Settings,
   CreditCard,
   X,
+  LogOut,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils/cn";
 
 export interface SidebarItem {
@@ -57,6 +59,12 @@ export function Sidebar({
   planName = "Plano Gratuito",
 }: SidebarProps) {
   const pathname = usePathname();
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  }
 
   const items = notificationCount !== undefined
     ? NAV_ITEMS.map((item) =>
@@ -185,6 +193,14 @@ export function Sidebar({
 
         {/* ── Rodapé — plano atual ── */}
         <div className="border-t border-[#e5e7eb]">
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-[10px] w-full rounded-[8px] mx-[10px] mt-3 px-3 py-[9px] text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937] transition-colors"
+            style={{ fontSize: "13.5px", fontWeight: 500, background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit" }}
+          >
+            <LogOut size={16} />
+            Sair
+          </button>
           <Link
             href="/settings/billing"
             className="group flex items-center gap-[10px] rounded-[10px] mx-[10px] my-3 px-3 py-[10px] bg-[#e8f5ef] border border-[#b8dfc8] hover:bg-[#EAF6F0] transition-colors"
