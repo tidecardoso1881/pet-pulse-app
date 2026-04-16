@@ -30,7 +30,22 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // Rotas protegidas — redireciona para login se não autenticado
-  const protectedPaths = ["/dashboard", "/pets", "/appointments", "/vaccines", "/vets", "/settings"]
+  // Manter sincronizado com o matcher em src/middleware.ts
+  const protectedPaths = [
+    "/dashboard",
+    "/pets",
+    "/appointments",
+    "/vaccines",
+    "/vets",
+    "/settings",
+    "/medical-records",
+    "/exams",
+    "/health-monitoring",
+    "/gps",
+    "/routine",
+    "/marketplace",
+    "/notifications",
+  ]
   const isProtected = protectedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)
   )
