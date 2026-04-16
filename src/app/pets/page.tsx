@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { PetsClient } from "./_components/PetsClient";
+import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
 export const metadata = { title: "Meus Pets — PetPulse" };
 
@@ -12,11 +13,14 @@ export default async function PetsPage() {
 
   if (!user) return null;
 
-  const { data: pets } = await supabase
-    .from("pets")
-    .select("id, owner_id, name, species, gender, breed, birth_date, weight_kg, photo_url")
-    .eq("owner_id", user.id)
-    .order("created_at", { ascending: true });
+  const [{ data: pets }, unreadCount] = await Promise.all([
+    supabase
+      .from("pets")
+      .select("id, owner_id, name, species, gender, breed, birth_date, weight_kg, photo_url")
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: true }),
+    getUnreadNotificationCount(supabase, user.id),
+  ]);
 
   const fullName: string =
     user.user_metadata?.full_name ?? user.email?.split("@")[0] ?? "Tutor";
@@ -36,7 +40,7 @@ export default async function PetsPage() {
         initials,
         avatarUrl: user.user_metadata?.avatar_url,
       }}
-      notificationCount={4}
+      notificationCount={unreadCount}
     >
       <PetsClient pets={pets ?? []} userId={user.id} />
     </AppShell>

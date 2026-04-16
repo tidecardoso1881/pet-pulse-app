@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { AppointmentsClient } from "./_components/AppointmentsClient";
+import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
 export const metadata = { title: "Agenda de Cuidados — PetPulse" };
 
@@ -10,7 +11,7 @@ export default async function AppointmentsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: appointments }, { data: pets }] = await Promise.all([
+  const [{ data: appointments }, { data: pets }, unreadCount] = await Promise.all([
     supabase
       .from("appointments")
       .select("*, pets(name, photo_url, species)")
@@ -21,6 +22,7 @@ export default async function AppointmentsPage() {
       .select("id, name, species, photo_url")
       .eq("owner_id", user.id)
       .order("name"),
+    getUnreadNotificationCount(supabase, user.id),
   ]);
 
   const fullName: string =
@@ -37,7 +39,7 @@ export default async function AppointmentsPage() {
   return (
     <AppShell
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
-      notificationCount={4}
+      notificationCount={unreadCount}
     >
       <AppointmentsClient
         initialAppointments={appointments ?? []}

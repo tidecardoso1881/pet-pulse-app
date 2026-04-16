@@ -1,27 +1,23 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
-import { MedicalRecordsClient } from "./_components/MedicalRecordsClient";
+import { NotificationsClient } from "./_components/NotificationsClient";
 import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
-export const metadata = { title: "Prontuário Digital — PetPulse" };
+export const metadata = { title: "Notificações — PetPulse" };
 
-export default async function MedicalRecordsPage() {
+export default async function NotificationsPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: records }, { data: pets }, unreadCount] = await Promise.all([
+  const [{ data: notifications }, unreadCount] = await Promise.all([
     supabase
-      .from("medical_records")
-      .select("*, pets(name, photo_url)")
+      .from("notifications")
+      .select("*, pets(name, species)")
       .eq("owner_id", user.id)
-      .order("date", { ascending: false }),
-    supabase
-      .from("pets")
-      .select("id, name, photo_url, allergies")
-      .eq("owner_id", user.id)
-      .order("name"),
+      .order("created_at", { ascending: false })
+      .limit(50),
     getUnreadNotificationCount(supabase, user.id),
   ]);
 
@@ -41,10 +37,9 @@ export default async function MedicalRecordsPage() {
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
       notificationCount={unreadCount}
     >
-      <MedicalRecordsClient
-        records={records ?? []}
-        pets={pets ?? []}
-        userId={user.id}
+      <NotificationsClient
+        initialNotifications={notifications ?? []}
+        unreadCount={unreadCount}
       />
     </AppShell>
   );

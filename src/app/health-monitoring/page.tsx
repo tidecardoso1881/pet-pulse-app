@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppShell } from "@/components/layout/app-shell";
 import { HealthMonitoringClient } from "./_components/HealthMonitoringClient";
+import { getUnreadNotificationCount } from "@/lib/utils/notifications";
 
 export const metadata = { title: "Monitoramento Ativo — PetPulse" };
 
@@ -10,7 +11,7 @@ export default async function HealthMonitoringPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: pets }, { data: records }] = await Promise.all([
+  const [{ data: pets }, { data: records }, unreadCount] = await Promise.all([
     supabase
       .from("pets")
       .select("id, name, species, photo_url")
@@ -22,6 +23,7 @@ export default async function HealthMonitoringPage() {
       .eq("owner_id", user.id)
       .order("date", { ascending: false })
       .limit(200),
+    getUnreadNotificationCount(supabase, user.id),
   ]);
 
   const fullName: string =
@@ -38,7 +40,7 @@ export default async function HealthMonitoringPage() {
   return (
     <AppShell
       user={{ name: fullName, initials, avatarUrl: user.user_metadata?.avatar_url }}
-      notificationCount={4}
+      notificationCount={unreadCount}
     >
       <HealthMonitoringClient
         pets={pets ?? []}
