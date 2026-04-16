@@ -130,6 +130,7 @@ export function GpsClient({ pets, locations, safeZones }: GpsClientProps) {
               location={activeLocation}
               zone={activeZone}
               petName={activePet?.name ?? "Pet"}
+              petSpecies={activePet?.species}
             />
           </div>
 
