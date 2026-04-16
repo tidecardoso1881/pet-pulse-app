@@ -69,7 +69,7 @@ export function ExamsClient({ initialExams, pets, userId }: ExamsClientProps) {
   return (
     <>
       {/* Page header */}
-      <div style={{ background: "white", borderBottom: "1px solid #e5e7eb", padding: "20px 28px" }}>
+      <div style={{ borderBottom: "1px solid #e5e7eb", padding: "20px 28px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
           <div>
             <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1a4d35", letterSpacing: "-0.5px", display: "flex", alignItems: "center", gap: 10 }}>
