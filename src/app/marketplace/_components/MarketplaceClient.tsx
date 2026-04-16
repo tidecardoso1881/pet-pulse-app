@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { PARTNERS, CATEGORY_LABELS, Partner, PartnerCategory } from "@/types/marketplace";
 import { PartnerCard } from "./PartnerCard";
-import { DetailsModal } from "./DetailsModal";
-import { ScheduleModal } from "./ScheduleModal";
+import { DetailsShelf } from "./DetailsShelf";
+import { ScheduleShelf } from "./ScheduleShelf";
 
 type FilterType = "all" | PartnerCategory;
 
@@ -137,13 +137,13 @@ export function MarketplaceClient() {
         </div>
       )}
 
-      {/* Modals */}
-      <DetailsModal
+      {/* Shelves */}
+      <DetailsShelf
         partner={detailsPartner}
         onClose={() => setDetailsPartner(null)}
         onSchedule={switchToSchedule}
       />
-      <ScheduleModal
+      <ScheduleShelf
         partner={schedulePartner}
         onClose={() => setSchedulePartner(null)}
       />
