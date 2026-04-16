@@ -7,13 +7,27 @@ interface MapViewProps {
   location: PetLocation | null;
   zone: SafeZone | null;
   petName: string;
+  petSpecies?: string | null;
+}
+
+function createPetMarker(species: string | null | undefined): HTMLDivElement {
+  const el = document.createElement("div");
+  el.style.cssText = `
+    width: 44px; height: 44px; border-radius: 50%;
+    background-color: #1a4d35; border: 3px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; cursor: pointer;
+  `;
+  el.textContent = species === "cat" ? "🐈" : species === "dog" ? "🐕" : "🐾";
+  return el;
 }
 
 // Default center: São Paulo, Brazil (CEP 03508-000)
 const DEFAULT_CENTER = { lng: -46.5076, lat: -23.5371 };
 const DEFAULT_ZOOM = 14;
 
-export function MapView({ location, zone, petName }: MapViewProps) {
+export function MapView({ location, zone, petName, petSpecies }: MapViewProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstanceRef = useRef<any>(null);
@@ -68,16 +82,7 @@ export function MapView({ location, zone, petName }: MapViewProps) {
 
         // Pet marker
         if (location) {
-          const el = document.createElement("div");
-          el.style.cssText = `
-            width: 36px; height: 36px; border-radius: 50%;
-            background: #2d7a57; border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; font-weight: 700; color: white;
-            cursor: default;
-          `;
-          el.textContent = petName[0]?.toUpperCase() ?? "P";
+          const el = createPetMarker(petSpecies);
 
           const marker = new mapboxgl.default.Marker({ element: el })
             .setLngLat([location.longitude, location.latitude])
