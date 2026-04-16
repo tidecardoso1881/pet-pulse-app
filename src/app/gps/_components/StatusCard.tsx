@@ -47,7 +47,7 @@ export function StatusCard({ pet, location, zone, status, onConfigZone }: Status
             {pet?.name ?? "—"}
           </p>
           <p style={{ fontSize: 12, color: cfg.iconColor, margin: "2px 0 0", fontWeight: 600 }}>
-            {cfg.label}
+            {status === "unknown" && location && !zone ? "Sem zona configurada" : cfg.label}
           </p>
         </div>
         <div
