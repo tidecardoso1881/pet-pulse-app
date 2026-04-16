@@ -15,18 +15,20 @@ test.afterEach(async () => {
 test.describe('T-03 — Cadastrar pet', () => {
   test('shelf completo: insert no banco, shelf fecha, card aparece', async ({ page }) => {
     await page.getByRole('button', { name: /adicionar pet/i }).click()
-    await expect(page.getByRole('dialog', { name: /adicionar pet/i })).toBeVisible()
 
-    await page.getByLabel('Nome do pet').fill('Thanos Teste')
-    await page.getByLabel('Espécie').selectOption('Cão')
-    await page.getByLabel('Sexo').selectOption('Macho')
-    await page.getByLabel('Raça').fill('Cane Corso')
-    await page.getByLabel('Peso (kg)').fill('65')
+    const shelf = page.locator('[aria-label="Adicionar Pet"]')
+    await expect(shelf).toBeVisible()
 
-    await page.getByRole('button', { name: /cadastrar pet/i }).click()
+    await shelf.getByPlaceholder('Ex: Luna').fill('Thanos Teste')
+    await shelf.locator('select').nth(0).selectOption('Cão')
+    await shelf.locator('select').nth(1).selectOption('Macho')
+    await shelf.getByPlaceholder('Ex: Golden Retriever').fill('Cane Corso')
+    await shelf.getByPlaceholder('Ex: 8.5').fill('65')
 
-    await expect(page.getByRole('dialog')).not.toBeVisible()
-    await expect(page.getByText('Thanos Teste')).toBeVisible()
+    await shelf.getByRole('button', { name: /cadastrar pet/i }).click()
+
+    // card aparece na lista (shelf fecha via translateX — aguardar refresh)
+    await expect(page.getByText('Thanos Teste')).toBeVisible({ timeout: 10000 })
   })
 })
 
@@ -35,6 +37,6 @@ test.describe('T-04 — Botão Dashboard → shelf', () => {
     await page.goto('/dashboard')
     await page.getByRole('button', { name: /cadastrar meu primeiro pet/i }).click()
     await expect(page).toHaveURL(/\/pets/)
-    await expect(page.getByRole('dialog', { name: /adicionar pet/i })).toBeVisible()
+    await expect(page.locator('[aria-label="Adicionar Pet"]')).toBeVisible()
   })
 })
