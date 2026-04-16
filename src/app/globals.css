@@ -247,4 +247,15 @@ h1, h2, h3, h4, h5, h6 {
   animation: slide-in-left 0.25s ease-out;
 }
 
-/* ─── Overlay para modais ─────
+/* ─── Overlay para modais ──────────────────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}

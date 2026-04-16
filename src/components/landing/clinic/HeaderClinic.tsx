@@ -1,0 +1,36 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
+export default function HeaderClinic() {
+  return (
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Voltar */}
+        <Link
+          href="/"
+          className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-[#2d7a57] transition-colors"
+        >
+          <ArrowLeft size={16} />
+          Voltar
+        </Link>
+
+        {/* Logo centralizado */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden>
+            <circle cx="14" cy="14" r="14" fill="#2d7a57" />
+            <path d="M14 20.5C14 20.5 7 16 7 10.8C7 8.7 8.7 7 10.8 7C12.1 7 13.2 7.7 14 8.8C14.8 7.7 15.9 7 17.2 7C19.3 7 21 8.7 21 10.8C21 16 14 20.5 14 20.5Z" fill="white"/>
+          </svg>
+          <span className="text-lg font-bold text-[#1a4d35]">PetPulse</span>
+        </div>
+
+        {/* CTA direita */}
+        <Link
+          href="#cta-clinic"
+          className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#2d7a57] rounded-lg hover:bg-[#1a4d35] transition-colors"
+        >
+          Falar com a equipe &rarr;
+        </Link>
+      </div>
+    </header>
+  );
+}
