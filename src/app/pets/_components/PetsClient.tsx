@@ -7,10 +7,15 @@ import { PetCard } from "./PetCard";
 import type { Pet } from "./PetCard";
 import { PetShelf } from "./PetShelf";
 import { EmptyState } from "./EmptyState";
+import { UpgradePrompt } from "@/components/upgrade/UpgradePrompt";
+import { UpgradeShelf } from "@/app/plans/_components/UpgradeShelf";
+import { isAtPetLimit } from "@/lib/plan-limits";
+import type { Plan } from "@/types/plans";
 
 interface PetsClientProps {
   pets: Pet[];
   userId: string;
+  plan: Plan;
 }
 
 const FILTERS = [
@@ -19,13 +24,16 @@ const FILTERS = [
   { label: "Gato",  emoji: "🐱" },
 ];
 
-export function PetsClient({ pets: initialPets, userId }: PetsClientProps) {
+export function PetsClient({ pets: initialPets, userId, plan }: PetsClientProps) {
   const router = useRouter();
   const [search, setSearch]       = useState("");
   const [filter, setFilter]       = useState("Todos");
   const [shelfOpen, setShelfOpen] = useState(false);
   const [shelfMode, setShelfMode] = useState<"add" | "edit">("add");
   const [editingPet, setEditingPet] = useState<Pet | null>(null);
+  const [upgradeShelfOpen, setUpgradeShelfOpen] = useState(false);
+
+  const atLimit = isAtPetLimit(plan, initialPets.length);
 
   const filtered = initialPets.filter((p) => {
     const matchFilter = filter === "Todos" || p.species === filter;
@@ -72,37 +80,39 @@ export function PetsClient({ pets: initialPets, userId }: PetsClientProps) {
           </p>
         </div>
 
-        <button
-          onClick={openAdd}
-          className="flex items-center"
-          style={{
-            gap: 8,
-            background: "#2d7a57",
-            color: "white",
-            border: "none",
-            borderRadius: 10,
-            padding: "10px 20px",
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: "pointer",
-            fontFamily: "inherit",
-            whiteSpace: "nowrap",
-            transition: "background 0.15s, transform 0.1s",
-          }}
-          onMouseEnter={(e) => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.background = "#256347";
-            el.style.transform = "translateY(-1px)";
-          }}
-          onMouseLeave={(e) => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.background = "#2d7a57";
-            el.style.transform = "";
-          }}
-        >
-          <Plus size={16} />
-          Adicionar Pet
-        </button>
+        {!atLimit && (
+          <button
+            onClick={openAdd}
+            className="flex items-center"
+            style={{
+              gap: 8,
+              background: "#2d7a57",
+              color: "white",
+              border: "none",
+              borderRadius: 10,
+              padding: "10px 20px",
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: "pointer",
+              fontFamily: "inherit",
+              whiteSpace: "nowrap",
+              transition: "background 0.15s, transform 0.1s",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "#256347";
+              el.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "#2d7a57";
+              el.style.transform = "";
+            }}
+          >
+            <Plus size={16} />
+            Adicionar Pet
+          </button>
+        )}
       </div>
 
       {/* Filter row */}
@@ -210,6 +220,23 @@ export function PetsClient({ pets: initialPets, userId }: PetsClientProps) {
         </div>
       )}
 
+      {/* Upgrade prompt when at limit */}
+      {atLimit && (
+        <div style={{ marginTop: 24 }}>
+          <UpgradePrompt
+            icon={
+              <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            }
+            title="Limite de pets atingido"
+            description="O plano Gratuito permite até 2 pets. Faça upgrade para adicionar mais."
+            onUpgrade={() => setUpgradeShelfOpen(true)}
+          />
+        </div>
+      )}
+
       {/* Shelf */}
       <PetShelf
         isOpen={shelfOpen}
@@ -219,6 +246,9 @@ export function PetsClient({ pets: initialPets, userId }: PetsClientProps) {
         onClose={() => setShelfOpen(false)}
         onSaved={handleSaved}
       />
+
+      {/* Upgrade shelf */}
+      <UpgradeShelf isOpen={upgradeShelfOpen} onClose={() => setUpgradeShelfOpen(false)} />
     </div>
   );
 }

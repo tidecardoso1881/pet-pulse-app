@@ -4,6 +4,10 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { PetLocation, SafeZone, LocationShare, calcGpsStatus } from "@/types/gps";
 import { insertManualLocation } from "../actions";
+import { UpgradePrompt } from "@/components/upgrade/UpgradePrompt";
+import { UpgradeShelf } from "@/app/plans/_components/UpgradeShelf";
+import { isPro } from "@/lib/plan-limits";
+import type { Plan } from "@/types/plans";
 import { PetSelector } from "./PetSelector";
 import { MapView } from "./MapView";
 import { StatusCard } from "./StatusCard";
@@ -26,6 +30,7 @@ interface GpsClientProps {
   locations: PetLocation[];
   safeZones: SafeZone[];
   userId: string;
+  plan: Plan;
 }
 
 function MapPinIcon() {
@@ -37,13 +42,14 @@ function MapPinIcon() {
   );
 }
 
-export function GpsClient({ pets, locations, safeZones }: GpsClientProps) {
+export function GpsClient({ pets, locations, safeZones, plan }: GpsClientProps) {
   const router = useRouter();
   const [activePetId, setActivePetId] = useState<string>(pets[0]?.id ?? "");
   const [safeZoneShelfOpen, setSafeZoneShelfOpen] = useState(false);
   const [routesShelfOpen, setRoutesShelfOpen] = useState(false);
   const [shareShelfOpen, setShareShelfOpen] = useState(false);
   const [simulating, setSimulating] = useState(false);
+  const [upgradeShelfOpen, setUpgradeShelfOpen] = useState(false);
 
   const activePet = pets.find((p) => p.id === activePetId);
 
@@ -91,6 +97,47 @@ export function GpsClient({ pets, locations, safeZones }: GpsClientProps) {
         <p style={{ fontSize: 16, fontWeight: 700, color: "#111827", marginBottom: 6 }}>Nenhum pet cadastrado</p>
         <p style={{ fontSize: 13, color: "#6b7280" }}>Cadastre um pet em Meus Pets para ativar o GPS.</p>
       </div>
+    );
+  }
+
+  if (!isPro(plan)) {
+    return (
+      <>
+        <div style={{ padding: "32px 28px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 500, gap: 32 }}>
+          {/* Blocked map placeholder */}
+          <div
+            style={{
+              width: "100%", maxWidth: 560, borderRadius: 16,
+              background: "linear-gradient(135deg, #f9fafb, #f3f4f6)",
+              border: "2px dashed #d1d5db",
+              minHeight: 320,
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              gap: 12, textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: 56 }}>🗺️</div>
+            <p style={{ fontSize: 15, fontWeight: 600, color: "#9ca3af", margin: 0 }}>
+              Mapa bloqueado
+            </p>
+          </div>
+
+          {/* Upgrade prompt */}
+          <div style={{ width: "100%", maxWidth: 480 }}>
+            <UpgradePrompt
+              icon={
+                <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              }
+              title="GPS disponível no Plano Pro"
+              description="Monitore a localização do seu pet em tempo real, crie zonas seguras e receba alertas de saída."
+              onUpgrade={() => setUpgradeShelfOpen(true)}
+            />
+          </div>
+        </div>
+        <UpgradeShelf isOpen={upgradeShelfOpen} onClose={() => setUpgradeShelfOpen(false)} />
+      </>
     );
   }
 

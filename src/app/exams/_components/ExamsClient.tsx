@@ -5,11 +5,16 @@ import { Exam, PetForExams, ExamType } from "@/types/exams";
 import { FilterBar } from "./FilterBar";
 import { ExamCard } from "./ExamCard";
 import { ExamShelf } from "./ExamShelf";
+import { UpgradePrompt } from "@/components/upgrade/UpgradePrompt";
+import { UpgradeShelf } from "@/app/plans/_components/UpgradeShelf";
+import { isAtExamLimit } from "@/lib/plan-limits";
+import type { Plan } from "@/types/plans";
 
 interface ExamsClientProps {
   initialExams: Exam[];
   pets: PetForExams[];
   userId: string;
+  plan: Plan;
 }
 
 function FolderIcon() {
@@ -29,12 +34,15 @@ function PlusIcon() {
   );
 }
 
-export function ExamsClient({ initialExams, pets, userId }: ExamsClientProps) {
+export function ExamsClient({ initialExams, pets, userId, plan }: ExamsClientProps) {
   const [exams, setExams] = useState<Exam[]>(initialExams);
   const [shelfOpen, setShelfOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<Exam | null>(null);
   const [activeFilter, setActiveFilter] = useState<ExamType | "todos">("todos");
   const [searchQuery, setSearchQuery] = useState("");
+  const [upgradeShelfOpen, setUpgradeShelfOpen] = useState(false);
+
+  const atLimit = isAtExamLimit(plan, exams.length);
 
   const filteredExams = useMemo(() => {
     return exams.filter((exam) => {
@@ -80,15 +88,17 @@ export function ExamsClient({ initialExams, pets, userId }: ExamsClientProps) {
               {exams.length} documento{exams.length !== 1 ? "s" : ""} armazenado{exams.length !== 1 ? "s" : ""}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={openNew}
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "#2d7a57", color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", transition: "background 0.15s" }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#1a4d35")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#2d7a57")}
-          >
-            <PlusIcon /> Enviar Documento
-          </button>
+          {!atLimit && (
+            <button
+              type="button"
+              onClick={openNew}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "#2d7a57", color: "white", border: "none", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", transition: "background 0.15s" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#1a4d35")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#2d7a57")}
+            >
+              <PlusIcon /> Enviar Documento
+            </button>
+          )}
         </div>
       </div>
 
@@ -159,6 +169,22 @@ export function ExamsClient({ initialExams, pets, userId }: ExamsClientProps) {
             ))}
           </div>
         )}
+
+        {/* Upgrade prompt when at limit */}
+        {atLimit && (
+          <div style={{ marginTop: 24 }}>
+            <UpgradePrompt
+              icon={
+                <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+              }
+              title="Limite de exames atingido"
+              description="O plano Gratuito permite até 10 exames. Faça upgrade para enviar mais documentos."
+              onUpgrade={() => setUpgradeShelfOpen(true)}
+            />
+          </div>
+        )}
       </div>
 
       <ExamShelf
@@ -169,6 +195,8 @@ export function ExamsClient({ initialExams, pets, userId }: ExamsClientProps) {
         onClose={() => setShelfOpen(false)}
         onSaved={handleSaved}
       />
+
+      <UpgradeShelf isOpen={upgradeShelfOpen} onClose={() => setUpgradeShelfOpen(false)} />
     </>
   );
 }
