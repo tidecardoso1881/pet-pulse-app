@@ -1,0 +1,22 @@
+# Normalizar line endings para LF em todos os arquivos de texto
+* text=auto eol=lf
+
+# Arquivos críticos — forçar LF explicitamente
+*.json text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Binários — não normalizar
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
