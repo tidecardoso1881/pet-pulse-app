@@ -83,6 +83,7 @@ export function PetsClient({ pets: initialPets, userId, plan }: PetsClientProps)
         {!atLimit && (
           <button
             onClick={openAdd}
+            data-testid="btn-add-pet"
             className="flex items-center"
             style={{
               gap: 8,
