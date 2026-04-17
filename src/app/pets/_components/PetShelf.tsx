@@ -262,6 +262,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
               value={form.name}
               onChange={(e) => set("name", e.target.value)}
               required
+              data-testid="pet-name-input"
               style={INPUT_STYLE}
               onFocus={onFocusGreen}
               onBlur={onBlurGreen}
@@ -277,6 +278,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
               <select
                 value={form.species}
                 onChange={(e) => set("species", e.target.value)}
+                data-testid="pet-species-input"
                 style={INPUT_STYLE}
                 onFocus={onFocusGreen}
                 onBlur={onBlurGreen}
@@ -371,6 +373,7 @@ export function PetShelf({ isOpen, mode, pet, userId, onClose, onSaved }: PetShe
           <button
             type="submit"
             disabled={loading}
+            data-testid="pet-form-submit"
             style={{
               width: "100%",
               padding: 12,
