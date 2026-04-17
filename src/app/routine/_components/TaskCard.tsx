@@ -6,11 +6,12 @@ import { RoutineTask, TYPE_ICON, TYPE_LABEL, isCompletedToday, formatTime } from
 interface TaskCardProps {
   task: RoutineTask;
   isLast: boolean;
+  index: number;
   onToggle: (task: RoutineTask) => void;
   onDelete: (id: string) => void;
 }
 
-export function TaskCard({ task, isLast, onToggle, onDelete }: TaskCardProps) {
+export function TaskCard({ task, isLast, index, onToggle, onDelete }: TaskCardProps) {
   const [hovered, setHovered] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const done = isCompletedToday(task);
@@ -39,6 +40,7 @@ export function TaskCard({ task, isLast, onToggle, onDelete }: TaskCardProps) {
         type="button"
         onClick={() => onToggle(task)}
         aria-label={done ? "Desmarcar tarefa" : "Marcar como concluída"}
+        data-testid={`task-checkbox-${index}`}
         style={{
           width: 22,
           height: 22,

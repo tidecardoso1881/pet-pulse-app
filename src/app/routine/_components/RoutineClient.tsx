@@ -235,7 +235,7 @@ export function RoutineClient({ initialTasks, pets }: RoutineClientProps) {
                     background: "white",
                     border: "1px solid #e5e7eb",
                     borderRadius: 12,
-                    overflow: "hidden",
+                    overflow: "clip",
                   }}
                 >
                   {petTasks.map((task, idx) => (
@@ -243,6 +243,7 @@ export function RoutineClient({ initialTasks, pets }: RoutineClientProps) {
                       key={task.id}
                       task={task}
                       isLast={idx === petTasks.length - 1}
+                      index={idx}
                       onToggle={handleToggle}
                       onDelete={handleDelete}
                     />
